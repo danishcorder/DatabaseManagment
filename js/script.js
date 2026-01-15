@@ -69,8 +69,29 @@ class AcademicAnimationSystem {
                         case 'fade-slide-up':
                             this.animateFadeSlideUp(element);
                             break;
+                        case 'fade-slide-up-delayed':
+                            this.animateFadeSlideUpDelayed(element);
+                            break;
                         case 'card-entrance':
                             this.animateCardEntrance(element);
+                            break;
+                        case 'slide-in-left':
+                            this.animateSlideInLeft(element);
+                            break;
+                        case 'slide-in-right':
+                            this.animateSlideInRight(element);
+                            break;
+                        case 'scale-in':
+                            this.animateScaleIn(element);
+                            break;
+                        case 'bounce-in':
+                            this.animateBounceIn(element);
+                            break;
+                        case 'flip-in':
+                            this.animateFlipIn(element);
+                            break;
+                        case 'float-up':
+                            this.animateFloatUp(element);
                             break;
                         default:
                             element.classList.add('animate-visible');
@@ -92,11 +113,39 @@ class AcademicAnimationSystem {
         element.classList.add('animate-visible');
     }
 
+    animateFadeSlideUpDelayed(element) {
+        element.classList.add('animate-visible-delayed');
+    }
+
     animateCardEntrance(element) {
         // Add staggered delay if specified
         const delay = element.getAttribute('data-delay') || '0s';
         element.style.transitionDelay = delay;
         element.classList.add('animate-visible');
+    }
+
+    animateSlideInLeft(element) {
+        element.classList.add('animate-visible-left');
+    }
+
+    animateSlideInRight(element) {
+        element.classList.add('animate-visible-right');
+    }
+
+    animateScaleIn(element) {
+        element.classList.add('animate-visible-scale');
+    }
+
+    animateBounceIn(element) {
+        element.classList.add('animate-visible-bounce');
+    }
+
+    animateFlipIn(element) {
+        element.classList.add('animate-visible-flip');
+    }
+
+    animateFloatUp(element) {
+        element.classList.add('animate-visible-float');
     }
 
     setupScrollProgress() {

@@ -265,18 +265,38 @@
                 <p>Visual Representation of Database Schema and Relationships</p>
             </div>
 
-            <!-- ER Diagram Placeholder -->
-            <div class="er-diagram-container" data-animate="card-entrance" data-delay="0.1">
-                <div class="er-placeholder">
-                    <i class="fas fa-project-diagram"></i>
-                    <h3>ER Diagram</h3>
-                    <p>
-                        The Entity-Relationship diagram would be displayed here, showing all entities,
-                        their attributes, and relationships between them. This diagram was created using
-                        dbdiagram.io and represents our normalized 3NF database schema.
-                    </p>
-                    <p><strong>Note:</strong> In a real academic submission, this would contain the actual ER diagram image.</p>
-                    <p><em>Image path: images/er_diagram.png</em></p>
+            <!-- ER Diagram Visual -->
+            <div class="er-diagram-container animate-visible" data-delay="0.1">
+                <div class="er-diagram-visual">
+                    <h3>Entity-Relationship Diagram - Food Delivery Management System</h3>
+                    <div class="er-diagram-canvas">
+                        <!-- Compact preview + toggle to open full ER diagram -->
+                        <div style="text-align:center;margin:0;">
+                            <button id="show-er-btn" class="btn btn-primary" style="padding:8px 14px;border-radius:8px;">Show ER Diagram</button>
+                            <a href="images/er_diagram.svg" target="_blank" rel="noopener" class="btn btn-secondary" style="padding:8px 14px;border-radius:8px;margin-left:8px;">Open SVG in new tab</a>
+
+                            <div id="er-viewer" style="display:none;margin-top:16px;border-radius:8px;border:1px solid var(--border-color);overflow:auto;max-height:72vh;padding:8px;background:#fbfdfe;">
+                                <object id="er-object" data="images/er_diagram.svg" type="image/svg+xml" style="width:100%;height:auto;display:block;"></object>
+                                <div style="text-align:right;margin-top:8px;">
+                                    <button id="close-er-btn" class="btn" style="padding:6px 10px;border-radius:8px;">Close</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                          (function(){
+                            var showBtn = document.getElementById('show-er-btn');
+                            var closeBtn = document.getElementById('close-er-btn');
+                            var viewer = document.getElementById('er-viewer');
+                            if (showBtn) {
+                              showBtn.addEventListener('click', function(){ viewer.style.display = 'block'; showBtn.style.display='none'; });
+                            }
+                            if (closeBtn) {
+                              closeBtn.addEventListener('click', function(){ viewer.style.display = 'none'; showBtn.style.display='inline-block'; });
+                            }
+                          })();
+                        </script>
+                    </div>
                 </div>
             </div>
 

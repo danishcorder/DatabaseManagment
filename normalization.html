@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Normalization - Food Delivery DBMS</title>
+    <meta name="description" content="Complete database normalization process from UNF to 5NF for Food Delivery Management System">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Table Styles for Normalization */
+        .normalization-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .normalization-table th,
+        .normalization-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .normalization-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85rem;
+        }
+
+        .normalization-table tr:nth-child(even) {
+            background: rgba(255, 107, 53, 0.02);
+        }
+
+        .normalization-table tr:hover {
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .normalization-step {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+            position: relative;
+        }
+
+        .normalization-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .problem-highlight {
+            background: rgba(232, 93, 117, 0.1);
+            border-left: 4px solid var(--secondary-color);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .solution-highlight {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .key-concept {
+            background: rgba(255, 107, 53, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 107, 53, 0.2);
+        }
+
+        .key-concept h4 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .dependency-arrow {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0 10px;
+        }
+
+        .functional-dependency {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 107, 53, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .final-schema {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 107, 53, 0.1));
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 32px 0;
+        }
+
+        .final-schema h3 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .schema-table {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .schema-table th {
+            background: var(--accent-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-utensils"></i>
+                <span>Food Delivery DBMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="problem.html" class="nav-link">Problem Statement</a>
+                </li>
+                <li class="nav-item">
+                    <a href="normalization.html" class="nav-link active">Normalization</a>
+                </li>
+                <li class="nav-item">
+                    <a href="erdiagram.html" class="nav-link">ER Diagram</a>
+                </li>
+                <li class="nav-item">
+                    <a href="sql.html" class="nav-link">SQL Implementation</a>
+                </li>
+                <li class="nav-item">
+                    <a href="conclusion.html" class="nav-link">Conclusion</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Normalization Section -->
+    <section class="normalization-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-slide-up">
+                <h2>Database Normalization Process</h2>
+                <p>Transforming Unstructured Data into a Normalized Database Schema</p>
+            </div>
+
+            <div class="normalization-content">
+                <!-- Introduction -->
+                <div class="content-card" data-animate="card-entrance" data-delay="0.1">
+                    <div class="card-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>What is Database Normalization?</h3>
+                    <p>
+                        Database normalization is the process of organizing data in a database to reduce redundancy
+                        and improve data integrity. It involves dividing large tables into smaller, related tables
+                        and defining relationships between them. The goal is to eliminate data anomalies and ensure
+                        that each piece of data is stored in only one place.
+                    </p>
+                    <div class="key-concept">
+                        <h4>Normalization Objectives:</h4>
+                        <ul>
+                            <li><strong>Eliminate redundant data</strong> - Store each piece of data in only one place</li>
+                            <li><strong>Ensure data dependencies</strong> - Make relationships between data clear and logical</li>
+                            <li><strong>Reduce update anomalies</strong> - Changes should be made in only one place</li>
+                            <li><strong>Maintain data integrity</strong> - Ensure data accuracy and consistency</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 1: UNF -->
+                <div class="normalization-step" data-step="UNF" data-animate="card-entrance" data-delay="0.2">
+                    <h3 class="step-title">Step 1: Unnormalized Form (UNF)</h3>
+                    <p>
+                        The starting point is a single large table containing all information. This represents
+                        how data might be stored in a spreadsheet or simple file-based system.
+                    </p>
+
+                    <div class="key-concept">
+                        <h4>Problems with UNF:</h4>
+                        <ul>
+                            <li>Multivalued attributes (CustomerPhones, FoodItems)</li>
+                            <li>Data redundancy across rows</li>
+                            <li>Insertion, deletion, and update anomalies</li>
+                            <li>No clear relationships between data elements</li>
+                        </ul>
+                    </div>
+
+                    <h4>Unnormalized Order Table:</h4>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerName</th>
+                                    <th>CustomerPhones</th>
+                                    <th>FoodItems</th>
+                                    <th>Restaurant</th>
+                                    <th>Rider</th>
+                                    <th>PaymentModes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>O001</td>
+                                    <td>John Smith</td>
+                                    <td>555-1234, 555-5678</td>
+                                    <td>Pizza, Coke</td>
+                                    <td>Domino's</td>
+                                    <td>Alex Rider</td>
+                                    <td>Credit Card, Cash</td>
+                                </tr>
+                                <tr>
+                                    <td>O002</td>
+                                    <td>John Smith</td>
+                                    <td>555-1234, 555-5678</td>
+                                    <td>Burger, Fries</td>
+                                    <td>McDonald's</td>
+                                    <td>Sarah Wilson</td>
+                                    <td>Debit Card</td>
+                                </tr>
+                                <tr>
+                                    <td>O003</td>
+                                    <td>Mary Johnson</td>
+                                    <td>555-9012</td>
+                                    <td>Sushi, Green Tea</td>
+                                    <td>Sushi Express</td>
+                                    <td>Mike Chen</td>
+                                    <td>Credit Card</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="problem-highlight">
+                        <strong>Issues Identified:</strong>
+                        <ul>
+                            <li>CustomerName "John Smith" is repeated</li>
+                            <li>CustomerPhones contains multiple values in one cell</li>
+                            <li>FoodItems has multiple items in one field</li>
+                            <li>PaymentModes has multiple payment options</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 2: 1NF -->
+                <div class="normalization-step" data-step="1NF" data-animate="card-entrance" data-delay="0.3">
+                    <h3 class="step-title">Step 2: First Normal Form (1NF)</h3>
+                    <p>
+                        A table is in 1NF if it contains only atomic (indivisible) values and no repeating groups.
+                        This eliminates multivalued attributes.
+                    </p>
+
+                    <div class="key-concept">
+                        <h4>1NF Rules:</h4>
+                        <ul>
+                            <li>Each cell must contain a single value</li>
+                            <li>No repeating groups or arrays</li>
+                            <li>Each column must have a unique name</li>
+                            <li>The order of rows and columns is irrelevant</li>
+                        </ul>
+                    </div>
+
+                    <h4>1NF Tables:</h4>
+
+                    <!-- Orders Table -->
+                    <h5>Orders Table (1NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerName</th>
+                                    <th>Restaurant</th>
+                                    <th>Rider</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>John Smith</td><td>Domino's</td><td>Alex Rider</td></tr>
+                                <tr><td>O002</td><td>John Smith</td><td>McDonald's</td><td>Sarah Wilson</td></tr>
+                                <tr><td>O003</td><td>Mary Johnson</td><td>Sushi Express</td><td>Mike Chen</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- CustomerPhones Table -->
+                    <h5>CustomerPhones Table (1NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>CustomerName</th>
+                                    <th>PhoneNumber</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>John Smith</td><td>555-1234</td></tr>
+                                <tr><td>John Smith</td><td>555-5678</td></tr>
+                                <tr><td>Mary Johnson</td><td>555-9012</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- FoodItems Table -->
+                    <h5>FoodItems Table (1NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>FoodItem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>Pizza</td></tr>
+                                <tr><td>O001</td><td>Coke</td></tr>
+                                <tr><td>O002</td><td>Burger</td></tr>
+                                <tr><td>O002</td><td>Fries</td></tr>
+                                <tr><td>O003</td><td>Sushi</td></tr>
+                                <tr><td>O003</td><td>Green Tea</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- PaymentModes Table -->
+                    <h5>PaymentModes Table (1NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>PaymentMode</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>Cash</td></tr>
+                                <tr><td>O002</td><td>Debit Card</td></tr>
+                                <tr><td>O003</td><td>Credit Card</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="solution-highlight">
+                        <strong>Improvements in 1NF:</strong>
+                        <ul>
+                            <li>Eliminated multivalued attributes</li>
+                            <li>Each cell contains single atomic values</li>
+                            <li>Tables are now in first normal form</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: 2NF -->
+                <div class="normalization-step" data-step="2NF" data-animate="card-entrance" data-delay="0.4">
+                    <h3 class="step-title">Step 3: Second Normal Form (2NF)</h3>
+                    <p>
+                        A table is in 2NF if it is in 1NF and all non-key attributes are fully functionally
+                        dependent on the primary key (no partial dependencies).
+                    </p>
+
+                    <div class="key-concept">
+                        <h4>2NF Rules:</h4>
+                        <ul>
+                            <li>Must be in 1NF</li>
+                            <li>No partial dependencies on composite primary keys</li>
+                            <li>All non-key attributes must depend on the entire primary key</li>
+                        </ul>
+                    </div>
+
+                    <h4>Identifying Partial Dependencies:</h4>
+                    <div class="functional-dependency">
+                        CustomerName <span class="dependency-arrow">→</span> PhoneNumber
+                    </div>
+                    <p>This shows that PhoneNumber depends only on CustomerName, not on the full key.</p>
+
+                    <h4>2NF Tables:</h4>
+
+                    <!-- Customer Table -->
+                    <h5>Customer Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>CustomerID</th>
+                                    <th>CustomerName</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>C001</td><td>John Smith</td></tr>
+                                <tr><td>C002</td><td>Mary Johnson</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- CustomerPhone Table -->
+                    <h5>CustomerPhone Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>CustomerID</th>
+                                    <th>PhoneNumber</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>C001</td><td>555-1234</td></tr>
+                                <tr><td>C001</td><td>555-5678</td></tr>
+                                <tr><td>C002</td><td>555-9012</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Orders Table -->
+                    <h5>Orders Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerID</th>
+                                    <th>Restaurant</th>
+                                    <th>Rider</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>C001</td><td>Domino's</td><td>Alex Rider</td></tr>
+                                <tr><td>O002</td><td>C001</td><td>McDonald's</td><td>Sarah Wilson</td></tr>
+                                <tr><td>O003</td><td>C002</td><td>Sushi Express</td><td>Mike Chen</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="solution-highlight">
+                        <strong>Benefits of 2NF:</strong>
+                        <ul>
+                            <li>Eliminated partial dependencies</li>
+                            <li>Customer data is no longer duplicated in orders</li>
+                            <li>Customer information changes affect only one table</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 4: 3NF -->
+                <div class="normalization-step" data-step="3NF" data-animate="card-entrance" data-delay="0.5">
+                    <h3 class="step-title">Step 4: Third Normal Form (3NF)</h3>
+                    <p>
+                        A table is in 3NF if it is in 2NF and there are no transitive dependencies.
+                        Non-key attributes must not depend on other non-key attributes.
+                    </p>
+
+                    <div class="key-concept">
+                        <h4>3NF Rules:</h4>
+                        <ul>
+                            <li>Must be in 2NF</li>
+                            <li>No transitive dependencies (A → B → C)</li>
+                            <li>All non-key attributes depend directly on the primary key</li>
+                        </ul>
+                    </div>
+
+                    <h4>Identifying Transitive Dependencies:</h4>
+                    <div class="functional-dependency">
+                        Restaurant <span class="dependency-arrow">→</span> RestaurantLocation
+                    </div>
+                    <div class="functional-dependency">
+                        Rider <span class="dependency-arrow">→</span> RiderContact
+                    </div>
+                    <p>These create transitive dependencies through the Orders table.</p>
+
+                    <h4>3NF Tables:</h4>
+
+                    <!-- Restaurant Table -->
+                    <h5>Restaurant Table (3NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>RestaurantID</th>
+                                    <th>RestaurantName</th>
+                                    <th>Location</th>
+                                    <th>ContactNumber</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>R001</td><td>Domino's</td><td>Downtown</td><td>555-1111</td></tr>
+                                <tr><td>R002</td><td>McDonald's</td><td>Mall</td><td>555-2222</td></tr>
+                                <tr><td>R003</td><td>Sushi Express</td><td>City Center</td><td>555-3333</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Rider Table -->
+                    <h5>Rider Table (3NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>RiderID</th>
+                                    <th>RiderName</th>
+                                    <th>ContactNumber</th>
+                                    <th>VehicleType</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>RD001</td><td>Alex Rider</td><td>555-4444</td><td>Motorcycle</td></tr>
+                                <tr><td>RD002</td><td>Sarah Wilson</td><td>555-5555</td><td>Bicycle</td></tr>
+                                <tr><td>RD003</td><td>Mike Chen</td><td>555-6666</td><td>Car</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Orders Table (Updated) -->
+                    <h5>Orders Table (3NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>CustomerID</th>
+                                    <th>RestaurantID</th>
+                                    <th>RiderID</th>
+                                    <th>OrderDate</th>
+                                    <th>TotalAmount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>C001</td><td>R001</td><td>RD001</td><td>2026-01-15</td><td>25.99</td></tr>
+                                <tr><td>O002</td><td>C001</td><td>R002</td><td>RD002</td><td>2026-01-15</td><td>15.50</td></tr>
+                                <tr><td>O003</td><td>C002</td><td>R003</td><td>RD003</td><td>2026-01-15</td><td>32.75</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="solution-highlight">
+                        <strong>Benefits of 3NF:</strong>
+                        <ul>
+                            <li>Eliminated transitive dependencies</li>
+                            <li>Restaurant and rider data are independent</li>
+                            <li>Changes to restaurant info don't affect orders</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 5: 4NF & 5NF -->
+                <div class="normalization-step" data-step="4NF-5NF" data-animate="card-entrance" data-delay="0.6">
+                    <h3 class="step-title">Step 5: Fourth and Fifth Normal Forms (4NF & 5NF)</h3>
+                    <p>
+                        4NF deals with multi-valued dependencies, while 5NF handles join dependencies.
+                        For most practical purposes, 3NF is sufficient, but we'll briefly cover higher normal forms.
+                    </p>
+
+                    <div class="key-concept">
+                        <h4>4NF & 5NF Overview:</h4>
+                        <ul>
+                            <li><strong>4NF:</strong> No multi-valued dependencies</li>
+                            <li><strong>5NF:</strong> No join dependencies (also called PJNF)</li>
+                            <li>Most business databases are normalized to 3NF</li>
+                            <li>Higher normal forms are rarely needed in practice</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-highlight">
+                        <strong>Conclusion:</strong> Our Food Delivery database is fully normalized to 3NF,
+                        which eliminates all practical data anomalies while maintaining query performance.
+                        Higher normal forms (4NF/5NF) are not typically required for this application domain.
+                    </div>
+                </div>
+
+                <!-- Final Schema -->
+                <div class="final-schema" data-animate="card-entrance" data-delay="0.7">
+                    <h3>🎉 Final Normalized Schema (3NF)</h3>
+                    <div class="table-container">
+                        <table class="schema-table normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>Table Name</th>
+                                    <th>Primary Key</th>
+                                    <th>Attributes</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Customer</strong></td>
+                                    <td>CustomerID</td>
+                                    <td>CustomerName</td>
+                                    <td>Basic customer information</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>CustomerPhone</strong></td>
+                                    <td>CustomerID, PhoneNumber</td>
+                                    <td>-</td>
+                                    <td>Customer phone numbers</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Restaurant</strong></td>
+                                    <td>RestaurantID</td>
+                                    <td>RestaurantName, Location, ContactNumber</td>
+                                    <td>Restaurant details</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Rider</strong></td>
+                                    <td>RiderID</td>
+                                    <td>RiderName, ContactNumber, VehicleType</td>
+                                    <td>Delivery rider information</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Orders</strong></td>
+                                    <td>OrderID</td>
+                                    <td>CustomerID, RestaurantID, RiderID, OrderDate, TotalAmount</td>
+                                    <td>Main order information</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Food</strong></td>
+                                    <td>FoodID</td>
+                                    <td>FoodName, Description, Price</td>
+                                    <td>Available food items</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OrderFood</strong></td>
+                                    <td>OrderID, FoodID</td>
+                                    <td>Quantity</td>
+                                    <td>Order line items</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Payment</strong></td>
+                                    <td>PaymentID</td>
+                                    <td>OrderID, PaymentMethod, Amount, PaymentDate</td>
+                                    <td>Payment transactions</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-animate="fade-slide-up">
+                <h2>Normalization Complete!</h2>
+                <p class="cta-description">
+                    Our database is now fully normalized and ready for implementation.
+                    Let's see how this translates into an Entity-Relationship diagram.
+                </p>
+                <div class="cta-buttons">
+                    <a href="erdiagram.html" class="btn btn-primary">
+                        <i class="fas fa-project-diagram"></i> View ER Diagram
+                    </a>
+                    <a href="sql.html" class="btn btn-secondary">
+                        <i class="fas fa-code"></i> See SQL Implementation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Food Delivery DBMS</h3>
+                    <p>Database Normalization Process</p>
+                    <p class="footer-year">2026</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Normalization Forms</h4>
+                    <ul class="footer-list">
+                        <li>UNF → 1NF → 2NF → 3NF</li>
+                        <li>Eliminated Data Redundancy</li>
+                        <li>Removed Update Anomalies</li>
+                        <li>Ensured Data Integrity</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Final Schema</h4>
+                    <ul class="footer-list">
+                        <li>Customer Table</li>
+                        <li>Restaurant Table</li>
+                        <li>Orders Table</li>
+                        <li>Rider Table</li>
+                        <li>Payment Table</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Food Delivery DBMS Project. Academic Use Only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>

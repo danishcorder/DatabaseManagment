@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Diagram - Food Delivery DBMS</title>
+    <meta name="description" content="Entity-Relationship diagram for the normalized Food Delivery Management System database">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .er-diagram-section {
+            padding: var(--spacing-xxl) 0;
+        }
+
+        .er-diagram-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .er-placeholder {
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
+            border: 2px dashed var(--primary-color);
+            border-radius: 12px;
+            padding: var(--spacing-xxl);
+            text-align: center;
+            color: var(--text-secondary);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .er-placeholder i {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.7;
+        }
+
+        .er-placeholder h3 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .entities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .entity-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .entity-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .entity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .entity-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .entity-attributes {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .attribute {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 0.95rem;
+        }
+
+        .attribute-key {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .attribute-regular {
+            color: var(--text-primary);
+        }
+
+        .attribute-foreign {
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .relationships-section {
+            background: rgba(255, 107, 53, 0.05);
+            border: 1px solid rgba(255, 107, 53, 0.2);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .relationship-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-md);
+            background: var(--card-bg);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-md);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .relationship-entities {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .relationship-type {
+            background: var(--accent-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cardinality {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .legend {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .legend-primary { background: var(--primary-color); }
+        .legend-accent { background: var(--accent-color); }
+        .legend-secondary { background: var(--secondary-color); }
+
+        .tool-info {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 107, 53, 0.1));
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+            text-align: center;
+        }
+
+        .tool-info h3 {
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .tool-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .tool-feature {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tool-feature i {
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-utensils"></i>
+                <span>Food Delivery DBMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="problem.html" class="nav-link">Problem Statement</a>
+                </li>
+                <li class="nav-item">
+                    <a href="normalization.html" class="nav-link">Normalization</a>
+                </li>
+                <li class="nav-item">
+                    <a href="erdiagram.html" class="nav-link active">ER Diagram</a>
+                </li>
+                <li class="nav-item">
+                    <a href="sql.html" class="nav-link">SQL Implementation</a>
+                </li>
+                <li class="nav-item">
+                    <a href="conclusion.html" class="nav-link">Conclusion</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ER Diagram Section -->
+    <section class="er-diagram-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-slide-up">
+                <h2>Entity-Relationship Diagram</h2>
+                <p>Visual Representation of Database Schema and Relationships</p>
+            </div>
+
+            <!-- ER Diagram Placeholder -->
+            <div class="er-diagram-container" data-animate="card-entrance" data-delay="0.1">
+                <div class="er-placeholder">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>ER Diagram</h3>
+                    <p>
+                        The Entity-Relationship diagram would be displayed here, showing all entities,
+                        their attributes, and relationships between them. This diagram was created using
+                        dbdiagram.io and represents our normalized 3NF database schema.
+                    </p>
+                    <p><strong>Note:</strong> In a real academic submission, this would contain the actual ER diagram image.</p>
+                    <p><em>Image path: images/er_diagram.png</em></p>
+                </div>
+            </div>
+
+            <!-- Entity Descriptions -->
+            <div class="content-card" data-animate="card-entrance" data-delay="0.2">
+                <div class="card-icon">
+                    <i class="fas fa-cubes"></i>
+                </div>
+                <h3>Database Entities</h3>
+                <p>
+                    Our normalized database consists of eight main entities, each representing a distinct
+                    concept in the food delivery domain. Each entity has specific attributes and participates
+                    in relationships with other entities.
+                </p>
+            </div>
+
+            <!-- Entities Grid -->
+            <div class="entities-grid">
+                <!-- Customer Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.3">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="entity-name">Customer</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">CustomerID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">CustomerName</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Represents customers who place food orders through the platform.
+                    </p>
+                </div>
+
+                <!-- CustomerPhone Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.4">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h4 class="entity-name">CustomerPhone</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-foreign">CustomerID (FK, PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-key">PhoneNumber (PK)</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Stores multiple phone numbers for each customer (weak entity).
+                    </p>
+                </div>
+
+                <!-- Restaurant Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.5">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h4 class="entity-name">Restaurant</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">RestaurantID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">RestaurantName</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">Location</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">ContactNumber</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Contains information about restaurants participating in the delivery service.
+                    </p>
+                </div>
+
+                <!-- Rider Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.6">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <h4 class="entity-name">Rider</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">RiderID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">RiderName</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">ContactNumber</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">VehicleType</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Represents delivery riders who transport orders from restaurants to customers.
+                    </p>
+                </div>
+
+                <!-- Orders Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.7">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h4 class="entity-name">Orders</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">OrderID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-foreign">CustomerID (FK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-foreign">RestaurantID (FK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-foreign">RiderID (FK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">OrderDate</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">TotalAmount</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Main entity representing food delivery orders (central entity).
+                    </p>
+                </div>
+
+                <!-- Food Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.8">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-pizza-slice"></i>
+                        </div>
+                        <h4 class="entity-name">Food</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">FoodID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">FoodName</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">Description</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">Price</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Contains information about individual food items available for order.
+                    </p>
+                </div>
+
+                <!-- OrderFood Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="0.9">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <h4 class="entity-name">OrderFood</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-foreign">OrderID (FK, PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-foreign">FoodID (FK, PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">Quantity</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Junction table for many-to-many relationship between Orders and Food.
+                    </p>
+                </div>
+
+                <!-- Payment Entity -->
+                <div class="entity-card" data-animate="card-entrance" data-delay="1.0">
+                    <div class="entity-header">
+                        <div class="entity-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h4 class="entity-name">Payment</h4>
+                    </div>
+                    <div class="entity-attributes">
+                        <div class="attribute">
+                            <span class="attribute-key">PaymentID (PK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-foreign">OrderID (FK)</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">PaymentMethod</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">Amount</span>
+                        </div>
+                        <div class="attribute">
+                            <span class="attribute-regular">PaymentDate</span>
+                        </div>
+                    </div>
+                    <p class="entity-description">
+                        Records payment transactions for completed orders.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Relationships Section -->
+            <div class="relationships-section" data-animate="card-entrance" data-delay="1.1">
+                <h3>Entity Relationships & Cardinality</h3>
+                <p>
+                    The following table shows all relationships between entities, including their cardinality
+                    (1:1, 1:M, M:N) and participation constraints.
+                </p>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Customer</span>
+                        <span class="cardinality">1:M</span>
+                        <span>CustomerPhone</span>
+                    </div>
+                    <div class="relationship-type">Has</div>
+                </div>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Customer</span>
+                        <span class="cardinality">1:M</span>
+                        <span>Orders</span>
+                    </div>
+                    <div class="relationship-type">Places</div>
+                </div>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Restaurant</span>
+                        <span class="cardinality">1:M</span>
+                        <span>Orders</span>
+                    </div>
+                    <div class="relationship-type">Fulfills</div>
+                </div>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Rider</span>
+                        <span class="cardinality">1:M</span>
+                        <span>Orders</span>
+                    </div>
+                    <div class="relationship-type">Delivers</div>
+                </div>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Orders</span>
+                        <span class="cardinality">M:N</span>
+                        <span>Food</span>
+                    </div>
+                    <div class="relationship-type">Contains</div>
+                </div>
+
+                <div class="relationship-item">
+                    <div class="relationship-entities">
+                        <span>Orders</span>
+                        <span class="cardinality">1:1</span>
+                        <span>Payment</span>
+                    </div>
+                    <div class="relationship-type">Paid By</div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="legend" data-animate="card-entrance" data-delay="1.2">
+                <h3>ER Diagram Legend</h3>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <div class="legend-color legend-primary"></div>
+                        <span><strong>Primary Key</strong> - Unique identifier</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-accent"></div>
+                        <span><strong>Foreign Key</strong> - References other entity</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-secondary"></div>
+                        <span><strong>Regular Attribute</strong> - Data attribute</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Information -->
+            <div class="tool-info" data-animate="card-entrance" data-delay="1.3">
+                <h3>Design Tool Used</h3>
+                <p><strong>dbdiagram.io</strong> - A free, simple tool for designing and visualizing database schemas</p>
+
+                <div class="tool-features">
+                    <div class="tool-feature">
+                        <i class="fas fa-mouse-pointer"></i>
+                        <h4>Easy to Use</h4>
+                        <p>Drag-and-drop interface for creating entities and relationships</p>
+                    </div>
+                    <div class="tool-feature">
+                        <i class="fas fa-code"></i>
+                        <h4>SQL Export</h4>
+                        <p>Automatically generates SQL CREATE statements</p>
+                    </div>
+                    <div class="tool-feature">
+                        <i class="fas fa-share"></i>
+                        <h4>Collaboration</h4>
+                        <p>Share diagrams with team members and instructors</p>
+                    </div>
+                    <div class="tool-feature">
+                        <i class="fas fa-cloud"></i>
+                        <h4>Cloud Storage</h4>
+                        <p>Save and access diagrams from anywhere</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-animate="fade-slide-up">
+                <h2>ER Diagram Complete!</h2>
+                <p class="cta-description">
+                    Now let's see how this conceptual design translates into actual SQL implementation
+                    with proper constraints, keys, and data types.
+                </p>
+                <div class="cta-buttons">
+                    <a href="sql.html" class="btn btn-primary">
+                        <i class="fas fa-code"></i> View SQL Implementation
+                    </a>
+                    <a href="normalization.html" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Normalization
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Food Delivery DBMS</h3>
+                    <p>Entity-Relationship Diagram</p>
+                    <p class="footer-year">2026</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>ER Diagram Elements</h4>
+                    <ul class="footer-list">
+                        <li>8 Main Entities</li>
+                        <li>Primary & Foreign Keys</li>
+                        <li>Relationship Cardinality</li>
+                        <li>Entity Attributes</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Design Tool</h4>
+                    <ul class="footer-list">
+                        <li>dbdiagram.io</li>
+                        <li>Visual Database Design</li>
+                        <li>SQL Code Generation</li>
+                        <li>Academic Documentation</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Food Delivery DBMS Project. Academic Use Only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+</body>
+</html>

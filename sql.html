@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Implementation - Food Delivery DBMS</title>
+    <meta name="description" content="Complete SQL implementation of the normalized Food Delivery Management System database">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <style>
+        .sql-section {
+            padding: var(--spacing-xxl) 0;
+        }
+
+        .code-block {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-md) 0;
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-block::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            color: #e5e7eb;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-block code {
+            background: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        .sql-keyword {
+            color: #60a5fa;
+            font-weight: 600;
+        }
+
+        .sql-function {
+            color: #fbbf24;
+        }
+
+        .sql-string {
+            color: #34d399;
+        }
+
+        .sql-comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .sql-number {
+            color: #f87171;
+        }
+
+        .sql-table {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        .table-implementation {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .table-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .table-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .constraints-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .constraint-item {
+            background: rgba(255, 107, 53, 0.05);
+            padding: var(--spacing-sm);
+            border-radius: 6px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .constraint-item h5 {
+            color: var(--primary-color);
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .constraint-item p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .sample-data-section {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(255, 107, 53, 0.1));
+            border: 1px solid var(--accent-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .sample-data-section h3 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .download-section {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .download-section h3 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-speed) var(--easing-function);
+            margin: 8px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .execution-guide {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid #fbbf24;
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .execution-guide h3 {
+            color: #d97706;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .execution-steps {
+            counter-reset: step-counter;
+        }
+
+        .execution-step {
+            counter-increment: step-counter;
+            margin-bottom: var(--spacing-md);
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .execution-step::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            background: #fbbf24;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .query-examples {
+            margin: var(--spacing-xxl) 0;
+        }
+
+        .query-example {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .query-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .query-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .query-title h4 {
+            color: var(--accent-color);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .query-description {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-utensils"></i>
+                <span>Food Delivery DBMS</span>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="problem.html" class="nav-link">Problem Statement</a>
+                </li>
+                <li class="nav-item">
+                    <a href="normalization.html" class="nav-link">Normalization</a>
+                </li>
+                <li class="nav-item">
+                    <a href="erdiagram.html" class="nav-link">ER Diagram</a>
+                </li>
+                <li class="nav-item">
+                    <a href="sql.html" class="nav-link active">SQL Implementation</a>
+                </li>
+                <li class="nav-item">
+                    <a href="conclusion.html" class="nav-link">Conclusion</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SQL Implementation Section -->
+    <section class="sql-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-slide-up">
+                <h2>SQL Implementation</h2>
+                <p>Complete Database Schema with Constraints and Sample Data</p>
+            </div>
+
+            <!-- Database Creation -->
+            <div class="content-card" data-animate="card-entrance" data-delay="0.1">
+                <div class="card-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Database Creation</h3>
+                <p>
+                    First, we create the database and set it as the active database for our operations.
+                    This establishes the foundation for our food delivery management system.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-comment">-- Create the Food Delivery Database</span>
+<span class="sql-keyword">CREATE DATABASE</span> FoodDeliveryDBMS;
+
+<span class="sql-comment">-- Use the created database</span>
+<span class="sql-keyword">USE</span> FoodDeliveryDBMS;</code></pre>
+                </div>
+            </div>
+
+            <!-- Table Implementations -->
+            <h3 style="text-align: center; margin: var(--spacing-xxl) 0 var(--spacing-lg);">Table Implementations</h3>
+
+            <!-- Customer Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.2">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="table-title">Customer Table</h4>
+                </div>
+                <p class="table-description">
+                    Stores basic information about customers who place orders.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Customer</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each customer</span>
+    CustomerID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Customer's full name</span>
+    CustomerName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>
+);</code></pre>
+                </div>
+
+                <div class="constraints-list">
+                    <div class="constraint-item">
+                        <h5>Primary Key</h5>
+                        <p>CustomerID uniquely identifies each customer</p>
+                    </div>
+                    <div class="constraint-item">
+                        <h5>NOT NULL</h5>
+                        <p>CustomerName cannot be empty</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CustomerPhone Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.3">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h4 class="table-title">CustomerPhone Table</h4>
+                </div>
+                <p class="table-description">
+                    Stores multiple phone numbers for each customer (weak entity).
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">CustomerPhone</span> (
+    <span class="sql-comment">-- Foreign Key + Primary Key: References Customer table</span>
+    CustomerID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>),
+    
+    <span class="sql-comment">-- Primary Key: Phone number (part of composite key)</span>
+    PhoneNumber <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">15</span>),
+    
+    <span class="sql-comment">-- Composite Primary Key constraint</span>
+    <span class="sql-keyword">PRIMARY KEY</span> (CustomerID, PhoneNumber),
+    
+    <span class="sql-comment">-- Foreign Key constraint</span>
+    <span class="sql-keyword">FOREIGN KEY</span> (CustomerID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Customer</span>(CustomerID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>
+);</code></pre>
+                </div>
+
+                <div class="constraints-list">
+                    <div class="constraint-item">
+                        <h5>Composite Primary Key</h5>
+                        <p>CustomerID + PhoneNumber</p>
+                    </div>
+                    <div class="constraint-item">
+                        <h5>Foreign Key</h5>
+                        <p>References Customer.CustomerID</p>
+                    </div>
+                    <div class="constraint-item">
+                        <h5>Cascade Actions</h5>
+                        <p>DELETE and UPDATE cascade</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.4">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h4 class="table-title">Restaurant Table</h4>
+                </div>
+                <p class="table-description">
+                    Contains information about restaurants participating in the delivery service.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Restaurant</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each restaurant</span>
+    RestaurantID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Restaurant name</span>
+    RestaurantName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Restaurant location/area</span>
+    Location <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Contact phone number</span>
+    ContactNumber <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">15</span>) <span class="sql-keyword">NOT NULL</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- Rider Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.5">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-motorcycle"></i>
+                    </div>
+                    <h4 class="table-title">Rider Table</h4>
+                </div>
+                <p class="table-description">
+                    Stores information about delivery riders and their vehicles.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Rider</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each rider</span>
+    RiderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Rider's full name</span>
+    RiderName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Contact phone number</span>
+    ContactNumber <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">15</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Type of vehicle used for delivery</span>
+    VehicleType <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">20</span>) <span class="sql-keyword">NOT NULL</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- Orders Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.6">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h4 class="table-title">Orders Table</h4>
+                </div>
+                <p class="table-description">
+                    Main table storing order information with foreign key relationships.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Orders</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each order</span>
+    OrderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Foreign Key: References Customer table</span>
+    CustomerID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Foreign Key: References Restaurant table</span>
+    RestaurantID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Foreign Key: References Rider table</span>
+    RiderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Date when order was placed</span>
+    OrderDate <span class="sql-keyword">DATE</span> <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Total amount for the order</span>
+    TotalAmount <span class="sql-keyword">DECIMAL</span>(<span class="sql-number">10</span>,<span class="sql-number">2</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Foreign Key constraints</span>
+    <span class="sql-keyword">FOREIGN KEY</span> (CustomerID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Customer</span>(CustomerID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>,
+    
+    <span class="sql-keyword">FOREIGN KEY</span> (RestaurantID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Restaurant</span>(RestaurantID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>,
+    
+    <span class="sql-keyword">FOREIGN KEY</span> (RiderID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Rider</span>(RiderID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- Food Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.7">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-pizza-slice"></i>
+                    </div>
+                    <h4 class="table-title">Food Table</h4>
+                </div>
+                <p class="table-description">
+                    Contains information about individual food items available for order.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Food</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each food item</span>
+    FoodID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Name of the food item</span>
+    FoodName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Description of the food item</span>
+    Description <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">255</span>),
+    
+    <span class="sql-comment">-- Price per unit</span>
+    Price <span class="sql-keyword">DECIMAL</span>(<span class="sql-number">8</span>,<span class="sql-number">2</span>) <span class="sql-keyword">NOT NULL</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- OrderFood Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.8">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <h4 class="table-title">OrderFood Table</h4>
+                </div>
+                <p class="table-description">
+                    Junction table for many-to-many relationship between Orders and Food.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">OrderFood</span> (
+    <span class="sql-comment">-- Foreign Key + Primary Key: References Orders table</span>
+    OrderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>),
+    
+    <span class="sql-comment">-- Foreign Key + Primary Key: References Food table</span>
+    FoodID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>),
+    
+    <span class="sql-comment">-- Quantity of this food item in the order</span>
+    Quantity <span class="sql-keyword">INT</span> <span class="sql-keyword">NOT NULL</span> <span class="sql-keyword">CHECK</span> (Quantity > <span class="sql-number">0</span>),
+    
+    <span class="sql-comment">-- Composite Primary Key</span>
+    <span class="sql-keyword">PRIMARY KEY</span> (OrderID, FoodID),
+    
+    <span class="sql-comment">-- Foreign Key constraints</span>
+    <span class="sql-keyword">FOREIGN KEY</span> (OrderID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Orders</span>(OrderID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>,
+    
+    <span class="sql-keyword">FOREIGN KEY</span> (FoodID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Food</span>(FoodID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- Payment Table -->
+            <div class="table-implementation" data-animate="card-entrance" data-delay="0.9">
+                <div class="table-header">
+                    <div class="table-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h4 class="table-title">Payment Table</h4>
+                </div>
+                <p class="table-description">
+                    Records payment transactions for completed orders.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Payment</span> (
+    <span class="sql-comment">-- Primary Key: Unique identifier for each payment</span>
+    PaymentID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
+    
+    <span class="sql-comment">-- Foreign Key: References Orders table</span>
+    OrderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">NOT NULL</span> <span class="sql-keyword">UNIQUE</span>,
+    
+    <span class="sql-comment">-- Payment method used</span>
+    PaymentMethod <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">20</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Payment amount</span>
+    Amount <span class="sql-keyword">DECIMAL</span>(<span class="sql-number">10</span>,<span class="sql-number">2</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Date when payment was made</span>
+    PaymentDate <span class="sql-keyword">DATE</span> <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Foreign Key constraint with UNIQUE to ensure 1:1 relationship</span>
+    <span class="sql-keyword">FOREIGN KEY</span> (OrderID) <span class="sql-keyword">REFERENCES</span> <span class="sql-table">Orders</span>(OrderID)
+        <span class="sql-keyword">ON DELETE CASCADE</span>
+        <span class="sql-keyword">ON UPDATE CASCADE</span>
+);</code></pre>
+                </div>
+            </div>
+
+            <!-- Sample Data Section -->
+            <div class="sample-data-section" data-animate="card-entrance" data-delay="1.0">
+                <h3>Sample Data Insertion</h3>
+                <p>
+                    Here we insert sample data to demonstrate how the normalized database works.
+                    This data follows the relationships established in our ER diagram.
+                </p>
+
+                <div class="code-block" data-lang="SQL">
+                    <pre><code><span class="sql-comment">-- Insert sample data following proper referential integrity</span>
+
+<span class="sql-comment">-- Insert Customers</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Customer</span> (<span class="sql-function">CustomerID</span>, <span class="sql-function">CustomerName</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'C001'</span>, <span class="sql-string">'John Smith'</span>),
+(<span class="sql-string">'C002'</span>, <span class="sql-string">'Mary Johnson'</span>);
+
+<span class="sql-comment">-- Insert Customer Phone Numbers</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">CustomerPhone</span> (<span class="sql-function">CustomerID</span>, <span class="sql-function">PhoneNumber</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'C001'</span>, <span class="sql-string">'555-1234'</span>),
+(<span class="sql-string">'C001'</span>, <span class="sql-string">'555-5678'</span>),
+(<span class="sql-string">'C002'</span>, <span class="sql-string">'555-9012'</span>);
+
+<span class="sql-comment">-- Insert Restaurants</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Restaurant</span> (<span class="sql-function">RestaurantID</span>, <span class="sql-function">RestaurantName</span>, <span class="sql-function">Location</span>, <span class="sql-function">ContactNumber</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'R001'</span>, <span class="sql-string">'Domino\'s Pizza'</span>, <span class="sql-string">'Downtown'</span>, <span class="sql-string">'555-1111'</span>),
+(<span class="sql-string">'R002'</span>, <span class="sql-string">'McDonald\'s'</span>, <span class="sql-string">'Mall'</span>, <span class="sql-string">'555-2222'</span>),
+(<span class="sql-string">'R003'</span>, <span class="sql-string">'Sushi Express'</span>, <span class="sql-string">'City Center'</span>, <span class="sql-string">'555-3333'</span>);
+
+<span class="sql-comment">-- Insert Riders</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Rider</span> (<span class="sql-function">RiderID</span>, <span class="sql-function">RiderName</span>, <span class="sql-function">ContactNumber</span>, <span class="sql-function">VehicleType</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'RD001'</span>, <span class="sql-string">'Alex Rider'</span>, <span class="sql-string">'555-4444'</span>, <span class="sql-string">'Motorcycle'</span>),
+(<span class="sql-string">'RD002'</span>, <span class="sql-string">'Sarah Wilson'</span>, <span class="sql-string">'555-5555'</span>, <span class="sql-string">'Bicycle'</span>),
+(<span class="sql-string">'RD003'</span>, <span class="sql-string">'Mike Chen'</span>, <span class="sql-string">'555-6666'</span>, <span class="sql-string">'Car'</span>);
+
+<span class="sql-comment">-- Insert Orders (referencing existing customers, restaurants, and riders)</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Orders</span> (<span class="sql-function">OrderID</span>, <span class="sql-function">CustomerID</span>, <span class="sql-function">RestaurantID</span>, <span class="sql-function">RiderID</span>, <span class="sql-function">OrderDate</span>, <span class="sql-function">TotalAmount</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'O001'</span>, <span class="sql-string">'C001'</span>, <span class="sql-string">'R001'</span>, <span class="sql-string">'RD001'</span>, <span class="sql-string">'2026-01-15'</span>, <span class="sql-number">25.99</span>),
+(<span class="sql-string">'O002'</span>, <span class="sql-string">'C001'</span>, <span class="sql-string">'R002'</span>, <span class="sql-string">'RD002'</span>, <span class="sql-string">'2026-01-15'</span>, <span class="sql-number">15.50</span>),
+(<span class="sql-string">'O003'</span>, <span class="sql-string">'C002'</span>, <span class="sql-string">'R003'</span>, <span class="sql-string">'RD003'</span>, <span class="sql-string">'2026-01-15'</span>, <span class="sql-number">32.75</span>);
+
+<span class="sql-comment">-- Insert Food Items</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Food</span> (<span class="sql-function">FoodID</span>, <span class="sql-function">FoodName</span>, <span class="sql-function">Description</span>, <span class="sql-function">Price</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'F001'</span>, <span class="sql-string">'Margherita Pizza'</span>, <span class="sql-string">'Classic pizza with tomato sauce and mozzarella'</span>, <span class="sql-number">15.99</span>),
+(<span class="sql-string">'F002'</span>, <span class="sql-string">'Coca Cola'</span>, <span class="sql-string">'Carbonated soft drink'</span>, <span class="sql-number">2.50</span>),
+(<span class="sql-string">'F003'</span>, <span class="sql-string">'Big Mac'</span>, <span class="sql-string">'Iconic hamburger with special sauce'</span>, <span class="sql-number">8.99</span>),
+(<span class="sql-string">'F004'</span>, <span class="sql-string">'French Fries'</span>, <span class="sql-string">'Golden crispy fries'</span>, <span class="sql-number">3.99</span>),
+(<span class="sql-string">'F005'</span>, <span class="sql-string">'California Roll'</span>, <span class="sql-string">'Crab and avocado sushi roll'</span>, <span class="sql-number">12.99</span>),
+(<span class="sql-string">'F006'</span>, <span class="sql-string">'Green Tea'</span>, <span class="sql-string">'Traditional Japanese green tea'</span>, <span class="sql-number">3.50</span>);
+
+<span class="sql-comment">-- Insert Order-Food relationships (junction table)</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">OrderFood</span> (<span class="sql-function">OrderID</span>, <span class="sql-function">FoodID</span>, <span class="sql-function">Quantity</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'O001'</span>, <span class="sql-string">'F001'</span>, <span class="sql-number">1</span>),
+(<span class="sql-string">'O001'</span>, <span class="sql-string">'F002'</span>, <span class="sql-number">2</span>),
+(<span class="sql-string">'O002'</span>, <span class="sql-string">'F003'</span>, <span class="sql-number">1</span>),
+(<span class="sql-string">'O002'</span>, <span class="sql-string">'F004'</span>, <span class="sql-number">1</span>),
+(<span class="sql-string">'O003'</span>, <span class="sql-string">'F005'</span>, <span class="sql-number">1</span>),
+(<span class="sql-string">'O003'</span>, <span class="sql-string">'F006'</span>, <span class="sql-number">2</span>);
+
+<span class="sql-comment">-- Insert Payment records</span>
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Payment</span> (<span class="sql-function">PaymentID</span>, <span class="sql-function">OrderID</span>, <span class="sql-function">PaymentMethod</span>, <span class="sql-function">Amount</span>, <span class="sql-function">PaymentDate</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'P001'</span>, <span class="sql-string">'O001'</span>, <span class="sql-string">'Credit Card'</span>, <span class="sql-number">25.99</span>, <span class="sql-string">'2026-01-15'</span>),
+(<span class="sql-string">'P002'</span>, <span class="sql-string">'O002'</span>, <span class="sql-string">'Debit Card'</span>, <span class="sql-number">15.50</span>, <span class="sql-string">'2026-01-15'</span>),
+(<span class="sql-string">'P003'</span>, <span class="sql-string">'O003'</span>, <span class="sql-string">'Credit Card'</span>, <span class="sql-number">32.75</span>, <span class="sql-string">'2026-01-15'</span>);</code></pre>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="download-section" data-animate="card-entrance" data-delay="1.1">
+                <h3>Complete SQL Script</h3>
+                <p>
+                    Download the complete executable SQL script containing all table definitions,
+                    constraints, and sample data for the Food Delivery Management System.
+                </p>
+                <a href="sql/food_delivery.sql" class="download-btn" download>
+                    <i class="fas fa-download"></i> Download SQL Script
+                </a>
+            </div>
+
+            <!-- Execution Guide -->
+            <div class="execution-guide" data-animate="card-entrance" data-delay="1.2">
+                <h3>Database Execution Guide</h3>
+                <div class="execution-steps">
+                    <div class="execution-step">
+                        <strong>Create a new database</strong> in your MySQL/MariaDB server
+                    </div>
+                    <div class="execution-step">
+                        <strong>Execute the CREATE DATABASE</strong> and USE statements first
+                    </div>
+                    <div class="execution-step">
+                        <strong>Run table creation statements</strong> in the order shown (parent tables first)
+                    </div>
+                    <div class="execution-step">
+                        <strong>Insert sample data</strong> following the referential integrity constraints
+                    </div>
+                    <div class="execution-step">
+                        <strong>Verify the database</strong> by running SELECT queries on each table
+                    </div>
+                </div>
+            </div>
+
+            <!-- Query Examples -->
+            <div class="query-examples" data-animate="card-entrance" data-delay="1.3">
+                <h3>Sample Query Examples</h3>
+
+                <div class="query-example">
+                    <div class="query-title">
+                        <div class="query-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h4>Get Customer Order History</h4>
+                    </div>
+                    <p class="query-description">
+                        Retrieve all orders for a specific customer with restaurant and rider details.
+                    </p>
+                    <div class="code-block" data-lang="SQL">
+                        <pre><code><span class="sql-keyword">SELECT</span> o.OrderID, o.OrderDate, o.TotalAmount,
+       r.RestaurantName, rd.RiderName
+<span class="sql-keyword">FROM</span> <span class="sql-table">Orders</span> o
+<span class="sql-keyword">JOIN</span> <span class="sql-table">Restaurant</span> r <span class="sql-keyword">ON</span> o.RestaurantID = r.RestaurantID
+<span class="sql-keyword">JOIN</span> <span class="sql-table">Rider</span> rd <span class="sql-keyword">ON</span> o.RiderID = rd.RiderID
+<span class="sql-keyword">WHERE</span> o.CustomerID = <span class="sql-string">'C001'</span>;</code></pre>
+                    </div>
+                </div>
+
+                <div class="query-example">
+                    <div class="query-title">
+                        <div class="query-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4>Revenue Analysis by Restaurant</h4>
+                    </div>
+                    <p class="query-description">
+                        Calculate total revenue for each restaurant.
+                    </p>
+                    <div class="code-block" data-lang="SQL">
+                        <pre><code><span class="sql-keyword">SELECT</span> r.RestaurantName, 
+       <span class="sql-function">COUNT</span>(o.OrderID) <span class="sql-keyword">AS</span> TotalOrders,
+       <span class="sql-function">SUM</span>(o.TotalAmount) <span class="sql-keyword">AS</span> TotalRevenue
+<span class="sql-keyword">FROM</span> <span class="sql-table">Restaurant</span> r
+<span class="sql-keyword">LEFT JOIN</span> <span class="sql-table">Orders</span> o <span class="sql-keyword">ON</span> r.RestaurantID = o.RestaurantID
+<span class="sql-keyword">GROUP BY</span> r.RestaurantID, r.RestaurantName;</code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content" data-animate="fade-slide-up">
+                <h2>SQL Implementation Complete!</h2>
+                <p class="cta-description">
+                    Our database is now fully implemented with proper constraints and sample data.
+                    Let's review the learning outcomes and project conclusions.
+                </p>
+                <div class="cta-buttons">
+                    <a href="conclusion.html" class="btn btn-primary">
+                        <i class="fas fa-check-circle"></i> View Conclusion
+                    </a>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Food Delivery DBMS</h3>
+                    <p>SQL Implementation</p>
+                    <p class="footer-year">2026</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Database Features</h4>
+                    <ul class="footer-list">
+                        <li>8 Normalized Tables</li>
+                        <li>Primary & Foreign Keys</li>
+                        <li>Referential Integrity</li>
+                        <li>Sample Data</li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>SQL Concepts</h4>
+                    <ul class="footer-list">
+                        <li>CREATE TABLE</li>
+                        <li>Constraints</li>
+                        <li>Relationships</li>
+                        <li>Data Types</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Food Delivery DBMS Project. Academic Use Only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</body>
+</html>

@@ -445,7 +445,7 @@ p {
 }
 
 .supervisor-info h3 {
-    font-size: 1.5rem;
+    font-size: .95rem;
     margin-bottom: 8px;
 }
 
@@ -453,6 +453,17 @@ p {
     display: flex;
     gap: 12px;
     margin-top: var(--spacing-md);
+}
+
+.supervisor-actions .btn-secondary {
+    background: var(--accent-color);
+    color: white;
+    border: 1px solid var(--accent-color);
+}
+
+.supervisor-actions .btn-secondary:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
 }
 
 /* Overview Section */
@@ -954,6 +965,7 @@ p {
         padding: var(--spacing-xl);
         border-radius: 20px;
         transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        overflow: hidden;
     }
 
     .team-card:hover, .overview-card:hover, .entity-card:hover {
@@ -968,6 +980,10 @@ p {
         padding: var(--spacing-xl);
         border-radius: 20px;
         gap: var(--spacing-xl);
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .supervisor-avatar img {
@@ -979,7 +995,82 @@ p {
         justify-content: center;
     }
 
-    /* Mobile CTA */
+    .supervisor-info h3 {
+        font-size: 1.25rem;
+    }
+
+    .supervisor-info .role {
+        font-size: 0.85rem;
+    }
+
+    .supervisor-info .bio {
+        font-size: 0.95rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .supervisor-info {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
+    }
+
+    /* Mobile ER Diagram */
+    .entities-grid {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-xl) !important;
+    }
+
+    .entity-card {
+        padding: var(--spacing-xl) !important;
+        border-radius: 20px !important;
+        overflow: hidden !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .relationship-item {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: var(--spacing-md) !important;
+        padding: var(--spacing-lg) !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        overflow: hidden !important;
+    }
+
+    .relationship-entities {
+        flex-direction: column !important;
+        gap: 8px !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .cardinality {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        font-size: 0.85rem !important;
+    }
+
+    .legend-grid {
+        grid-template-columns: 1fr !important;
+        gap: var(--spacing-md) !important;
+    }
+
+    /* Mobile ER Diagram Button */
+    #show-er-btn {
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+        font-weight: 600 !important;
+        min-width: 160px !important;
+        margin: 0 auto !important;
+        display: block !important;
+        box-shadow: var(--shadow-md) !important;
+    }
     .cta-section {
         padding: var(--spacing-xxl) var(--spacing-lg);
     }
@@ -1110,9 +1201,13 @@ p {
 
     /* Ultra Mobile Cards */
     .team-card, .overview-card, .entity-card, .supervisor-card {
-        padding: var(--spacing-lg);
+        padding: 12px;
         border-radius: 16px;
         margin: 0 10px;
+        overflow: hidden;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .team-avatar img {
@@ -1121,14 +1216,73 @@ p {
     }
 
     .supervisor-avatar img {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
+    }
+
+    .supervisor-info h3 {
+        font-size: 1rem;
+    }
+
+    .supervisor-info .role {
+        font-size: 0.75rem;
+    }
+
+    .supervisor-info .bio {
+        font-size: 0.85rem;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .supervisor-info {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        max-width: 100%;
     }
 
     .entity-icon {
         width: 35px;
         height: 35px;
         font-size: 1.1rem;
+    }
+
+    /* Ultra Mobile ER Diagram */
+    .entity-card {
+        padding: 12px !important;
+        margin: 0 10px !important;
+        overflow: hidden !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .relationship-item {
+        padding: var(--spacing-md) !important;
+        margin-bottom: var(--spacing-md) !important;
+        overflow: hidden !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .er-diagram-container {
+        padding: 12px !important;
+        margin: var(--spacing-md) 10px !important;
+    }
+
+    .er-placeholder {
+        padding: var(--spacing-lg) !important;
+        margin: var(--spacing-md) 10px !important;
+    }
+
+    /* Ultra Mobile ER Diagram Button */
+    #show-er-btn {
+        padding: 14px 24px !important;
+        font-size: 1.1rem !important;
+        min-width: 180px !important;
+        margin: var(--spacing-md) auto !important;
     }
 
     /* Ultra Mobile Tables */

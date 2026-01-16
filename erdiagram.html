@@ -24,26 +24,33 @@
             margin: var(--spacing-lg) 0;
         }
 
-        .er-placeholder {
-            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-primary));
-            border: 2px dashed var(--primary-color);
+        .er-image-container {
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
             border-radius: 12px;
-            padding: var(--spacing-xxl);
+            padding: var(--spacing-xl);
             text-align: center;
-            color: var(--text-secondary);
-            margin: var(--spacing-lg) 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all var(--transition-speed) var(--easing-function);
         }
 
-        .er-placeholder i {
-            font-size: 4rem;
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-lg);
-            opacity: 0.7;
+        .er-image-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.15);
         }
 
-        .er-placeholder h3 {
-            color: var(--primary-color);
-            margin-bottom: var(--spacing-md);
+        .er-image-display img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border: 2px solid var(--border-color);
+            transition: all var(--transition-speed) var(--easing-function);
+        }
+
+        .er-image-display img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 25px rgba(0,0,0,0.2);
         }
 
         .entities-grid {
@@ -59,6 +66,13 @@
             border-radius: 12px;
             padding: var(--spacing-lg);
             position: relative;
+            transition: all var(--transition-speed) var(--easing-function);
+        }
+
+        .entity-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
         .entity-header {
@@ -97,6 +111,26 @@
             gap: 8px;
             padding: 6px 0;
             font-size: 0.95rem;
+        }
+
+        .attribute-key {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .attribute-regular {
+            color: var(--text-primary);
+        }
+
+        .attribute-foreign {
+            color: var(--secondary-color);
+            font-style: italic;
+        }
+
+        .entity-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
         .attribute-key {
@@ -270,32 +304,17 @@
                 <div class="er-diagram-visual">
                     <h3>Entity-Relationship Diagram - Food Delivery Management System</h3>
                     <div class="er-diagram-canvas">
-                        <!-- Compact preview + toggle to open full ER diagram -->
-                        <div style="text-align:center;margin:0;">
-                            <button id="show-er-btn" class="btn btn-primary" style="padding:8px 14px;border-radius:8px;">Show ER Diagram</button>
-                            <a href="images/er_diagram.svg" target="_blank" rel="noopener" class="btn btn-secondary" style="padding:8px 14px;border-radius:8px;margin-left:8px;">Open SVG in new tab</a>
-
-                            <div id="er-viewer" style="display:none;margin-top:16px;border-radius:8px;border:1px solid var(--border-color);overflow:auto;max-height:72vh;padding:8px;background:#fbfdfe;">
-                                <object id="er-object" data="images/er_diagram.svg" type="image/svg+xml" style="width:100%;height:auto;display:block;"></object>
-                                <div style="text-align:right;margin-top:8px;">
-                                    <button id="close-er-btn" class="btn" style="padding:6px 10px;border-radius:8px;">Close</button>
-                                </div>
+                        <!-- ER Diagram Image Display -->
+                        <div class="er-image-container" style="text-align:center;margin-bottom:20px;padding:20px;border:2px solid var(--border-color);border-radius:12px;background: var(--card-bg);box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                            <h4 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">📊 Entity-Relationship Diagram</h4>
+                            <div class="er-image-display">
+                                <img src="images/erdiagram.jfif" alt="ER Diagram - Food Delivery Management System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); border: 2px solid var(--border-color);">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <script>
-                          (function(){
-                            var showBtn = document.getElementById('show-er-btn');
-                            var closeBtn = document.getElementById('close-er-btn');
-                            var viewer = document.getElementById('er-viewer');
-                            if (showBtn) {
-                              showBtn.addEventListener('click', function(){ viewer.style.display = 'block'; showBtn.style.display='none'; });
-                            }
-                            if (closeBtn) {
-                              closeBtn.addEventListener('click', function(){ viewer.style.display = 'none'; showBtn.style.display='inline-block'; });
-                            }
-                          })();
-                        </script>
                     </div>
                 </div>
             </div>

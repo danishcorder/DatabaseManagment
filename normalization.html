@@ -302,106 +302,85 @@
                 <div class="normalization-step" data-step="1NF" data-animate="card-entrance" data-delay="0.3">
                     <h3 class="step-title">Step 2: First Normal Form (1NF)</h3>
                     <p>
-                        A table is in 1NF if it contains only atomic (indivisible) values and no repeating groups.
-                        This eliminates multivalued attributes.
+                        <strong>Important Rule:</strong> After converting UNF to 1NF, the entire data must remain in ONE single table.
+                        Do NOT create multiple tables in 1NF. Table splitting is allowed only from 2NF onward.
                     </p>
 
                     <div class="key-concept">
                         <h4>1NF Rules:</h4>
                         <ul>
-                            <li>Each cell must contain a single value</li>
-                            <li>No repeating groups or arrays</li>
+                            <li>Each cell must contain a single atomic (indivisible) value</li>
+                            <li>No repeating groups or multivalued attributes</li>
                             <li>Each column must have a unique name</li>
                             <li>The order of rows and columns is irrelevant</li>
+                            <li><strong>All data remains in ONE table</strong></li>
                         </ul>
                     </div>
 
-                    <h4>1NF Tables:</h4>
+                    <div class="problem-highlight">
+                        <strong>Previous Mistake:</strong> The original implementation incorrectly split the UNF table into multiple tables during 1NF conversion.
+                        This violates the rule that 1NF must maintain all data in a single table.
+                    </div>
 
-                    <!-- Orders Table -->
-                    <h5>Orders Table (1NF):</h5>
+                    <h4>Functional Dependencies (Before 1NF):</h4>
+                    <div class="functional-dependency">
+                        OrderID <span class="dependency-arrow">→</span> CustomerName, Restaurant, Rider
+                    </div>
+                    <div class="functional-dependency">
+                        CustomerName <span class="dependency-arrow">→</span> CustomerPhones
+                    </div>
+                    <div class="functional-dependency">
+                        OrderID <span class="dependency-arrow">→</span> FoodItems, PaymentModes
+                    </div>
+
+                    <h4>Correct 1NF Table (Single Table):</h4>
+                    <p><strong>Process:</strong> Eliminate multivalued attributes by creating multiple rows for each combination of atomic values.</p>
+
                     <div class="table-container">
                         <table class="normalization-table">
                             <thead>
                                 <tr>
                                     <th>OrderID</th>
                                     <th>CustomerName</th>
+                                    <th>CustomerPhone</th>
+                                    <th>FoodItem</th>
                                     <th>Restaurant</th>
                                     <th>Rider</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>O001</td><td>John Smith</td><td>Domino's</td><td>Alex Rider</td></tr>
-                                <tr><td>O002</td><td>John Smith</td><td>McDonald's</td><td>Sarah Wilson</td></tr>
-                                <tr><td>O003</td><td>Mary Johnson</td><td>Sushi Express</td><td>Mike Chen</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- CustomerPhones Table -->
-                    <h5>CustomerPhones Table (1NF):</h5>
-                    <div class="table-container">
-                        <table class="normalization-table">
-                            <thead>
-                                <tr>
-                                    <th>CustomerName</th>
-                                    <th>PhoneNumber</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>John Smith</td><td>555-1234</td></tr>
-                                <tr><td>John Smith</td><td>555-5678</td></tr>
-                                <tr><td>Mary Johnson</td><td>555-9012</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- FoodItems Table -->
-                    <h5>FoodItems Table (1NF):</h5>
-                    <div class="table-container">
-                        <table class="normalization-table">
-                            <thead>
-                                <tr>
-                                    <th>OrderID</th>
-                                    <th>FoodItem</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td>O001</td><td>Pizza</td></tr>
-                                <tr><td>O001</td><td>Coke</td></tr>
-                                <tr><td>O002</td><td>Burger</td></tr>
-                                <tr><td>O002</td><td>Fries</td></tr>
-                                <tr><td>O003</td><td>Sushi</td></tr>
-                                <tr><td>O003</td><td>Green Tea</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- PaymentModes Table -->
-                    <h5>PaymentModes Table (1NF):</h5>
-                    <div class="table-container">
-                        <table class="normalization-table">
-                            <thead>
-                                <tr>
-                                    <th>OrderID</th>
                                     <th>PaymentMode</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>O001</td><td>Credit Card</td></tr>
-                                <tr><td>O001</td><td>Cash</td></tr>
-                                <tr><td>O002</td><td>Debit Card</td></tr>
-                                <tr><td>O003</td><td>Credit Card</td></tr>
+                                <!-- Order O001: John Smith, phones: 555-1234, 555-5678, items: Pizza, Coke, payments: Credit Card, Cash -->
+                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
+
+                                <!-- Order O002: John Smith, phone: 555-1234, 555-5678, items: Burger, Fries, payment: Debit Card -->
+                                <tr><td>O002</td><td>John Smith</td><td>555-1234</td><td>Burger</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John Smith</td><td>555-1234</td><td>Fries</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John Smith</td><td>555-5678</td><td>Burger</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John Smith</td><td>555-5678</td><td>Fries</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
+
+                                <!-- Order O003: Mary Johnson, phone: 555-9012, items: Sushi, Green Tea, payment: Credit Card -->
+                                <tr><td>O003</td><td>Mary Johnson</td><td>555-9012</td><td>Sushi</td><td>Sushi Express</td><td>Mike Chen</td><td>Credit Card</td></tr>
+                                <tr><td>O003</td><td>Mary Johnson</td><td>555-9012</td><td>Green Tea</td><td>Sushi Express</td><td>Mike Chen</td><td>Credit Card</td></tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="solution-highlight">
-                        <strong>Improvements in 1NF:</strong>
+                        <strong>Correct 1NF Implementation:</strong>
                         <ul>
-                            <li>Eliminated multivalued attributes</li>
+                            <li>All multivalued attributes eliminated</li>
                             <li>Each cell contains single atomic values</li>
-                            <li>Tables are now in first normal form</li>
+                            <li><strong>All data remains in ONE table</strong></li>
+                            <li>Primary key is still OrderID (though not unique due to multiple rows)</li>
+                            <li>Data redundancy exists but will be resolved in higher normal forms</li>
                         </ul>
                     </div>
                 </div>
@@ -420,14 +399,30 @@
                             <li>Must be in 1NF</li>
                             <li>No partial dependencies on composite primary keys</li>
                             <li>All non-key attributes must depend on the entire primary key</li>
+                            <li><strong>Table splitting is now allowed</strong></li>
                         </ul>
                     </div>
 
-                    <h4>Identifying Partial Dependencies:</h4>
+                    <h4>Functional Dependencies (After 1NF):</h4>
                     <div class="functional-dependency">
-                        CustomerName <span class="dependency-arrow">→</span> PhoneNumber
+                        OrderID <span class="dependency-arrow">→</span> CustomerName, Restaurant, Rider
                     </div>
-                    <p>This shows that PhoneNumber depends only on CustomerName, not on the full key.</p>
+                    <div class="functional-dependency">
+                        CustomerName <span class="dependency-arrow">→</span> CustomerPhone
+                    </div>
+                    <div class="functional-dependency">
+                        OrderID <span class="dependency-arrow">→</span> FoodItem, PaymentMode
+                    </div>
+
+                    <div class="problem-highlight">
+                        <strong>Partial Dependencies Identified:</strong>
+                        <ul>
+                            <li><code>CustomerName → CustomerPhone</code> (Phone depends only on CustomerName, not OrderID)</li>
+                            <li><code>OrderID → FoodItem</code> (FoodItem depends on OrderID)</li>
+                            <li><code>OrderID → PaymentMode</code> (PaymentMode depends on OrderID)</li>
+                        </ul>
+                        <p>Since there are no composite primary keys in our current design, partial dependencies occur when non-key attributes depend on only part of a potential composite key. Here, CustomerPhone depends only on CustomerName.</p>
+                    </div>
 
                     <h4>2NF Tables:</h4>
 
@@ -486,12 +481,54 @@
                         </table>
                     </div>
 
+                    <!-- OrderFood Table -->
+                    <h5>OrderFood Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>FoodItem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>Pizza</td></tr>
+                                <tr><td>O001</td><td>Coke</td></tr>
+                                <tr><td>O002</td><td>Burger</td></tr>
+                                <tr><td>O002</td><td>Fries</td></tr>
+                                <tr><td>O003</td><td>Sushi</td></tr>
+                                <tr><td>O003</td><td>Green Tea</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- OrderPayment Table -->
+                    <h5>OrderPayment Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>OrderID</th>
+                                    <th>PaymentMode</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>O001</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>Cash</td></tr>
+                                <tr><td>O002</td><td>Debit Card</td></tr>
+                                <tr><td>O003</td><td>Credit Card</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="solution-highlight">
                         <strong>Benefits of 2NF:</strong>
                         <ul>
                             <li>Eliminated partial dependencies</li>
-                            <li>Customer data is no longer duplicated in orders</li>
-                            <li>Customer information changes affect only one table</li>
+                            <li>Customer data separated from order data</li>
+                            <li>Food items and payments linked to specific orders</li>
+                            <li>Primary Keys: CustomerID, OrderID</li>
+                            <li>Foreign Keys: CustomerID in Orders table</li>
                         </ul>
                     </div>
                 </div>
@@ -513,14 +550,27 @@
                         </ul>
                     </div>
 
-                    <h4>Identifying Transitive Dependencies:</h4>
+                    <h4>Functional Dependencies (After 2NF):</h4>
                     <div class="functional-dependency">
-                        Restaurant <span class="dependency-arrow">→</span> RestaurantLocation
+                        OrderID <span class="dependency-arrow">→</span> CustomerID, Restaurant, Rider
                     </div>
                     <div class="functional-dependency">
-                        Rider <span class="dependency-arrow">→</span> RiderContact
+                        Restaurant <span class="dependency-arrow">→</span> Location, ContactNumber
                     </div>
-                    <p>These create transitive dependencies through the Orders table.</p>
+                    <div class="functional-dependency">
+                        Rider <span class="dependency-arrow">→</span> ContactNumber, VehicleType
+                    </div>
+
+                    <div class="problem-highlight">
+                        <strong>Transitive Dependencies Identified:</strong>
+                        <ul>
+                            <li><code>OrderID → Restaurant → Location</code> (Location depends on Restaurant, not directly on OrderID)</li>
+                            <li><code>OrderID → Restaurant → ContactNumber</code> (Restaurant contact depends on Restaurant)</li>
+                            <li><code>OrderID → Rider → ContactNumber</code> (Rider contact depends on Rider)</li>
+                            <li><code>OrderID → Rider → VehicleType</code> (Vehicle type depends on Rider)</li>
+                        </ul>
+                        <p>These transitive dependencies create update anomalies. Restaurant and rider details should be in separate tables.</p>
+                    </div>
 
                     <h4>3NF Tables:</h4>
 
@@ -615,9 +665,9 @@
                     </div>
 
                     <div class="solution-highlight">
-                        <strong>Conclusion:</strong> Our Food Delivery database is fully normalized to 3NF,
-                        which eliminates all practical data anomalies while maintaining query performance.
-                        Higher normal forms (4NF/5NF) are not typically required for this application domain.
+                        <strong>Conclusion:</strong> Our Food Delivery database is fully normalized to 3NF as shown in the step-by-step process above.
+                        The normalization eliminates all practical data anomalies while maintaining query performance.
+                        Higher normal forms (4NF/5NF) are not typically required for this business application and would add unnecessary complexity.
                     </div>
                 </div>
 
@@ -666,22 +716,16 @@
                                     <td>Main order information</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Food</strong></td>
-                                    <td>FoodID</td>
-                                    <td>FoodName, Description, Price</td>
-                                    <td>Available food items</td>
-                                </tr>
-                                <tr>
                                     <td><strong>OrderFood</strong></td>
-                                    <td>OrderID, FoodID</td>
-                                    <td>Quantity</td>
-                                    <td>Order line items</td>
+                                    <td>OrderID, FoodItem</td>
+                                    <td>-</td>
+                                    <td>Food items per order</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Payment</strong></td>
-                                    <td>PaymentID</td>
-                                    <td>OrderID, PaymentMethod, Amount, PaymentDate</td>
-                                    <td>Payment transactions</td>
+                                    <td><strong>OrderPayment</strong></td>
+                                    <td>OrderID, PaymentMode</td>
+                                    <td>-</td>
+                                    <td>Payment methods per order</td>
                                 </tr>
                             </tbody>
                         </table>

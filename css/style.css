@@ -1612,3 +1612,457 @@ a:focus, button:focus, input:focus {
 .skip-link:focus {
     top: 6px;
 }
+
+/* ===========================================
+   ADVANCED 2026-LEVEL ANIMATIONS & EFFECTS
+   =========================================== */
+
+/* Dynamic Background Effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(232, 93, 117, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(76, 175, 80, 0.05) 0%, transparent 50%);
+    animation: backgroundShift 20s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes backgroundShift {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: scale(1.1) rotate(2deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(0.9) rotate(-1deg);
+        opacity: 0.2;
+    }
+}
+
+/* Morphing Blob Animation */
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg,
+        rgba(255, 107, 53, 0.1),
+        rgba(232, 93, 117, 0.1),
+        rgba(76, 175, 80, 0.1));
+    border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+    transform: translate(-50%, -50%);
+    animation: morphBlob 15s ease-in-out infinite;
+    filter: blur(60px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+@keyframes morphBlob {
+    0%, 100% {
+        border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    25% {
+        border-radius: 30% 60% 40% 70% / 60% 30% 60% 40%;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    50% {
+        border-radius: 50% 40% 30% 60% / 30% 60% 40% 60%;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    75% {
+        border-radius: 60% 40% 50% 30% / 50% 50% 30% 60%;
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+}
+
+/* Advanced Text Animations */
+.hero-text h1 {
+    animation: textGlow 3s ease-in-out infinite alternate,
+               textFloat 6s ease-in-out infinite;
+    position: relative;
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        filter: brightness(1);
+    }
+    100% {
+        text-shadow: 0 0 30px rgba(255, 107, 53, 0.8),
+                     0 0 50px rgba(255, 107, 53, 0.6),
+                     0 0 80px rgba(255, 107, 53, 0.4);
+        filter: brightness(1.2);
+    }
+}
+
+@keyframes textFloat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 3D Card Hover Effects */
+.team-card {
+    perspective: 1000px;
+    transform-style: preserve-3d;
+}
+
+.team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+        rgba(255, 107, 53, 0.1),
+        rgba(232, 93, 117, 0.1),
+        rgba(76, 175, 80, 0.1));
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+.team-card:hover::before {
+    opacity: 1;
+}
+
+.team-card:hover {
+    transform: translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.02);
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 107, 53, 0.1);
+}
+
+/* Particle System */
+.particles-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    animation: particleFloat 20s linear infinite;
+    opacity: 0.6;
+}
+
+.particle:nth-child(2n) {
+    background: var(--secondary-color);
+    animation-duration: 25s;
+    animation-delay: -5s;
+}
+
+.particle:nth-child(3n) {
+    background: var(--accent-color);
+    animation-duration: 30s;
+    animation-delay: -10s;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) translateX(0px) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100px) translateX(100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Advanced Button Effects */
+.btn {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Magnetic Hover Effect */
+.nav-link {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Staggered Animation Delays */
+.team-card:nth-child(1) { animation-delay: 0.1s; }
+.team-card:nth-child(2) { animation-delay: 0.2s; }
+.team-card:nth-child(3) { animation-delay: 0.3s; }
+.team-card:nth-child(4) { animation-delay: 0.4s; }
+.team-card:nth-child(5) { animation-delay: 0.5s; }
+.team-card:nth-child(6) { animation-delay: 0.6s; }
+.team-card:nth-child(7) { animation-delay: 0.7s; }
+
+.overview-card:nth-child(1) { animation-delay: 0.1s; }
+.overview-card:nth-child(2) { animation-delay: 0.3s; }
+.overview-card:nth-child(3) { animation-delay: 0.5s; }
+.overview-card:nth-child(4) { animation-delay: 0.7s; }
+
+/* Advanced Scroll Effects */
+[data-animate="card-entrance"] {
+    transform: translateY(60px) scale(0.8) rotateX(15deg);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+[data-animate="card-entrance"].animate-visible {
+    transform: translateY(0) scale(1) rotateX(0deg);
+}
+
+/* Pulse Animation for Important Elements */
+.stat-card {
+    animation: gentlePulse 4s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: var(--shadow-md);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: var(--shadow-lg);
+    }
+}
+
+/* Liquid Button Effect */
+.btn {
+    border: none;
+    position: relative;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+}
+
+.btn:hover::after {
+    transform: translateX(100%);
+}
+
+/* 3D Table Effects */
+.normalization-table {
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+}
+
+.normalization-table:hover {
+    transform: rotateX(2deg) rotateY(2deg);
+}
+
+.normalization-table tr {
+    transition: all 0.3s ease;
+}
+
+.normalization-table tr:hover {
+    transform: translateZ(10px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Advanced Loading Animation */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: loadingFade 0.5s ease-in-out;
+}
+
+.loading-content {
+    text-align: center;
+    animation: loadingBounce 2s ease-in-out infinite;
+}
+
+.loading-spinner {
+    width: 80px;
+    height: 80px;
+    border: 4px solid rgba(255, 107, 53, 0.1);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: loadingSpin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes loadingFade {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes loadingBounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes loadingSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Advanced Typography Effects */
+h2 {
+    position: relative;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 3s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Interactive Code Blocks */
+.code-block {
+    position: relative;
+    overflow: hidden;
+}
+
+.code-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 107, 53, 0.1),
+        transparent);
+    animation: codeHighlight 4s ease-in-out infinite;
+}
+
+@keyframes codeHighlight {
+    0%, 100% {
+        left: -100%;
+    }
+    50% {
+        left: 100%;
+    }
+}
+
+/* Dynamic Shadows */
+.team-card:hover {
+    box-shadow:
+        0 20px 40px rgba(255, 107, 53, 0.2),
+        0 0 0 1px rgba(255, 107, 53, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Advanced Mobile Animations */
+@media (max-width: 768px) {
+    .hero::after {
+        width: 400px;
+        height: 400px;
+    }
+
+    .team-card:hover {
+        transform: translateY(-5px) scale(1.01);
+    }
+}

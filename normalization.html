@@ -317,58 +317,42 @@
                         </ul>
                     </div>
 
-                    <div class="problem-highlight">
-                        <strong>Previous Mistake:</strong> The original implementation incorrectly split the UNF table into multiple tables during 1NF conversion.
-                        This violates the rule that 1NF must maintain all data in a single table.
-                    </div>
+            
 
-                    <h4>Functional Dependencies (Before 1NF):</h4>
-                    <div class="functional-dependency">
-                        OrderID <span class="dependency-arrow">→</span> CustomerName, Restaurant, Rider
-                    </div>
-                    <div class="functional-dependency">
-                        CustomerName <span class="dependency-arrow">→</span> CustomerPhones
-                    </div>
-                    <div class="functional-dependency">
-                        OrderID <span class="dependency-arrow">→</span> FoodItems, PaymentModes
-                    </div>
-
-                    <h4>Correct 1NF Table (Single Table):</h4>
-                    <p><strong>Process:</strong> Eliminate multivalued attributes by creating multiple rows for each combination of atomic values.</p>
+                    <h4> 1NF Table:</h4>
 
                     <div class="table-container">
                         <table class="normalization-table">
                             <thead>
                                 <tr>
                                     <th>OrderID</th>
-                                    <th>CustomerName</th>
+                                    <th>CustomerFirstName</th>
+                                    <th>CustomerLastName</th>
                                     <th>CustomerPhone</th>
                                     <th>FoodItem</th>
                                     <th>Restaurant</th>
-                                    <th>Rider</th>
+                                    <th>RiderFirstName</th>
+                                    <th>RiderLastName</th>
                                     <th>PaymentMode</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Order O001: John Smith, phones: 555-1234, 555-5678, items: Pizza, Coke, payments: Credit Card, Cash -->
-                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Credit Card</td></tr>
-                                <tr><td>O001</td><td>John Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-1234</td><td>Pizza</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-1234</td><td>Coke</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-5678</td><td>Pizza</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Cash</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Credit Card</td></tr>
+                                <tr><td>O001</td><td>John</td><td>Smith</td><td>555-5678</td><td>Coke</td><td>Domino's</td><td>Alex</td><td>Rider</td><td>Cash</td></tr>
 
-                                <!-- Order O002: John Smith, phone: 555-1234, 555-5678, items: Burger, Fries, payment: Debit Card -->
-                                <tr><td>O002</td><td>John Smith</td><td>555-1234</td><td>Burger</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
-                                <tr><td>O002</td><td>John Smith</td><td>555-1234</td><td>Fries</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
-                                <tr><td>O002</td><td>John Smith</td><td>555-5678</td><td>Burger</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
-                                <tr><td>O002</td><td>John Smith</td><td>555-5678</td><td>Fries</td><td>McDonald's</td><td>Sarah Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John</td><td>Smith</td><td>555-1234</td><td>Burger</td><td>McDonald's</td><td>Sarah</td><td>Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John</td><td>Smith</td><td>555-1234</td><td>Fries</td><td>McDonald's</td><td>Sarah</td><td>Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John</td><td>Smith</td><td>555-5678</td><td>Burger</td><td>McDonald's</td><td>Sarah</td><td>Wilson</td><td>Debit Card</td></tr>
+                                <tr><td>O002</td><td>John</td><td>Smith</td><td>555-5678</td><td>Fries</td><td>McDonald's</td><td>Sarah</td><td>Wilson</td><td>Debit Card</td></tr>
 
-                                <!-- Order O003: Mary Johnson, phone: 555-9012, items: Sushi, Green Tea, payment: Credit Card -->
-                                <tr><td>O003</td><td>Mary Johnson</td><td>555-9012</td><td>Sushi</td><td>Sushi Express</td><td>Mike Chen</td><td>Credit Card</td></tr>
-                                <tr><td>O003</td><td>Mary Johnson</td><td>555-9012</td><td>Green Tea</td><td>Sushi Express</td><td>Mike Chen</td><td>Credit Card</td></tr>
+                                <tr><td>O003</td><td>Mary</td><td>Johnson</td><td>555-9012</td><td>Sushi</td><td>Sushi Express</td><td>Mike</td><td>Chen</td><td>Credit Card</td></tr>
+                                <tr><td>O003</td><td>Mary</td><td>Johnson</td><td>555-9012</td><td>Green Tea</td><td>Sushi Express</td><td>Mike</td><td>Chen</td><td>Credit Card</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -433,12 +417,13 @@
                             <thead>
                                 <tr>
                                     <th>CustomerID</th>
-                                    <th>CustomerName</th>
+                                    <th>CustomerFirstName</th>
+                                    <th>CustomerLastName</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>C001</td><td>John Smith</td></tr>
-                                <tr><td>C002</td><td>Mary Johnson</td></tr>
+                                <tr><td>C001</td><td>John</td><td>Smith</td></tr>
+                                <tr><td>C002</td><td>Mary</td><td>Johnson</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -470,13 +455,36 @@
                                     <th>OrderID</th>
                                     <th>CustomerID</th>
                                     <th>Restaurant</th>
-                                    <th>Rider</th>
+                                    <th>RiderFirstName</th>
+                                    <th>RiderLastName</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>O001</td><td>C001</td><td>Domino's</td><td>Alex Rider</td></tr>
-                                <tr><td>O002</td><td>C001</td><td>McDonald's</td><td>Sarah Wilson</td></tr>
-                                <tr><td>O003</td><td>C002</td><td>Sushi Express</td><td>Mike Chen</td></tr>
+                                <tr><td>O001</td><td>C001</td><td>Domino's</td><td>Alex</td><td>Rider</td></tr>
+                                <tr><td>O002</td><td>C001</td><td>McDonald's</td><td>Sarah</td><td>Wilson</td></tr>
+                                <tr><td>O003</td><td>C002</td><td>Sushi Express</td><td>Mike</td><td>Chen</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Food Table -->
+                    <h5>Food Table (2NF):</h5>
+                    <div class="table-container">
+                        <table class="normalization-table">
+                            <thead>
+                                <tr>
+                                    <th>FoodID</th>
+                                    <th>FoodName</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>F001</td><td>Pizza</td><td>15.99</td></tr>
+                                <tr><td>F002</td><td>Coke</td><td>2.50</td></tr>
+                                <tr><td>F003</td><td>Burger</td><td>8.99</td></tr>
+                                <tr><td>F004</td><td>Fries</td><td>3.99</td></tr>
+                                <tr><td>F005</td><td>Sushi</td><td>12.99</td></tr>
+                                <tr><td>F006</td><td>Green Tea</td><td>3.50</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -488,16 +496,16 @@
                             <thead>
                                 <tr>
                                     <th>OrderID</th>
-                                    <th>FoodItem</th>
+                                    <th>FoodID</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>O001</td><td>Pizza</td></tr>
-                                <tr><td>O001</td><td>Coke</td></tr>
-                                <tr><td>O002</td><td>Burger</td></tr>
-                                <tr><td>O002</td><td>Fries</td></tr>
-                                <tr><td>O003</td><td>Sushi</td></tr>
-                                <tr><td>O003</td><td>Green Tea</td></tr>
+                                <tr><td>O001</td><td>F001</td></tr>
+                                <tr><td>O001</td><td>F002</td></tr>
+                                <tr><td>O002</td><td>F003</td></tr>
+                                <tr><td>O002</td><td>F004</td></tr>
+                                <tr><td>O003</td><td>F005</td></tr>
+                                <tr><td>O003</td><td>F006</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -601,15 +609,16 @@
                             <thead>
                                 <tr>
                                     <th>RiderID</th>
-                                    <th>RiderName</th>
+                                    <th>RiderFirstName</th>
+                                    <th>RiderLastName</th>
                                     <th>ContactNumber</th>
                                     <th>VehicleType</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>RD001</td><td>Alex Rider</td><td>555-4444</td><td>Motorcycle</td></tr>
-                                <tr><td>RD002</td><td>Sarah Wilson</td><td>555-5555</td><td>Bicycle</td></tr>
-                                <tr><td>RD003</td><td>Mike Chen</td><td>555-6666</td><td>Car</td></tr>
+                                <tr><td>RD001</td><td>Alex</td><td>Rider</td><td>555-4444</td><td>Motorcycle</td></tr>
+                                <tr><td>RD002</td><td>Sarah</td><td>Wilson</td><td>555-5555</td><td>Bicycle</td></tr>
+                                <tr><td>RD003</td><td>Mike</td><td>Chen</td><td>555-6666</td><td>Car</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -688,7 +697,7 @@
                                 <tr>
                                     <td><strong>Customer</strong></td>
                                     <td>CustomerID</td>
-                                    <td>CustomerName</td>
+                                    <td>CustomerFirstName, CustomerLastName</td>
                                     <td>Basic customer information</td>
                                 </tr>
                                 <tr>
@@ -706,7 +715,7 @@
                                 <tr>
                                     <td><strong>Rider</strong></td>
                                     <td>RiderID</td>
-                                    <td>RiderName, ContactNumber, VehicleType</td>
+                                    <td>RiderFirstName, RiderLastName, ContactNumber, VehicleType</td>
                                     <td>Delivery rider information</td>
                                 </tr>
                                 <tr>
@@ -716,16 +725,22 @@
                                     <td>Main order information</td>
                                 </tr>
                                 <tr>
+                                    <td><strong>Food</strong></td>
+                                    <td>FoodID</td>
+                                    <td>FoodName, Description, Price</td>
+                                    <td>Food items available for order</td>
+                                </tr>
+                                <tr>
                                     <td><strong>OrderFood</strong></td>
-                                    <td>OrderID, FoodItem</td>
-                                    <td>-</td>
+                                    <td>OrderID, FoodID</td>
+                                    <td>Quantity</td>
                                     <td>Food items per order</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>OrderPayment</strong></td>
-                                    <td>OrderID, PaymentMode</td>
-                                    <td>-</td>
-                                    <td>Payment methods per order</td>
+                                    <td><strong>Payment</strong></td>
+                                    <td>PaymentID</td>
+                                    <td>OrderID, PaymentMethod, Amount, PaymentDate</td>
+                                    <td>Payment transactions</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -780,9 +795,12 @@
                     <h4>Final Schema</h4>
                     <ul class="footer-list">
                         <li>Customer Table</li>
+                        <li>CustomerPhone Table</li>
                         <li>Restaurant Table</li>
-                        <li>Orders Table</li>
                         <li>Rider Table</li>
+                        <li>Orders Table</li>
+                        <li>Food Table</li>
+                        <li>OrderFood Table</li>
                         <li>Payment Table</li>
                     </ul>
                 </div>

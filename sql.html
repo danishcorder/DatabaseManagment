@@ -348,36 +348,41 @@
             <h3 style="text-align: center; margin: var(--spacing-xxl) 0 var(--spacing-lg);">Table Implementations</h3>
 
             <!-- Customer Table -->
-            <div class="table-implementation" data-animate="card-entrance" data-delay="0.2">
-                <div class="table-header">
-                    <div class="table-icon">
-                        <i class="fas fa-user"></i>
+                <div class="table-implementation" data-animate="card-entrance" data-delay="0.2">
+                    <div class="table-header">
+                        <div class="table-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="table-title">Customer Table</h4>
                     </div>
-                    <h4 class="table-title">Customer Table</h4>
-                </div>
-                <p class="table-description">
-                    Stores basic information about customers who place orders.
-                </p>
+                    <p class="table-description">
+                        Stores basic information about customers who place orders.
+                    </p>
 
-                <div class="code-block" data-lang="SQL">
-                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Customer</span> (
+                    <div class="code-block" data-lang="SQL">
+                        <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Customer</span> (
     <span class="sql-comment">-- Primary Key: Unique identifier for each customer</span>
     CustomerID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
     
-    <span class="sql-comment">-- Customer's full name</span>
-    CustomerName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>
+    <span class="sql-comment">-- Customer's first name</span>
+    CustomerFirstName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">50</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Customer's last name</span>
+    CustomerLastName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">50</span>) <span class="sql-keyword">NOT NULL</span>
 );</code></pre>
-                </div>
+                    </div>
 
-                <div class="constraints-list">
-                    <div class="constraint-item">
-                        <h5>Primary Key</h5>
-                        <p>CustomerID uniquely identifies each customer</p>
+                    <div class="constraints-list">
+                        <div class="constraint-item">
+                            <h5>Primary Key</h5>
+                            <p>CustomerID uniquely identifies each customer</p>
+                        </div>
+                        <div class="constraint-item">
+                            <h5>NOT NULL</h5>
+                            <p>First and last names cannot be empty</p>
+                        </div>
                     </div>
-                    <div class="constraint-item">
-                        <h5>NOT NULL</h5>
-                        <p>CustomerName cannot be empty</p>
-                    </div>
+                </div>
                 </div>
             </div>
 
@@ -457,24 +462,27 @@
             </div>
 
             <!-- Rider Table -->
-            <div class="table-implementation" data-animate="card-entrance" data-delay="0.5">
-                <div class="table-header">
-                    <div class="table-icon">
-                        <i class="fas fa-motorcycle"></i>
+                <div class="table-implementation" data-animate="card-entrance" data-delay="0.5">
+                    <div class="table-header">
+                        <div class="table-icon">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <h4 class="table-title">Rider Table</h4>
                     </div>
-                    <h4 class="table-title">Rider Table</h4>
-                </div>
-                <p class="table-description">
-                    Stores information about delivery riders and their vehicles.
-                </p>
+                    <p class="table-description">
+                        Stores information about delivery riders and their vehicles.
+                    </p>
 
-                <div class="code-block" data-lang="SQL">
-                    <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Rider</span> (
+                    <div class="code-block" data-lang="SQL">
+                        <pre><code><span class="sql-keyword">CREATE TABLE</span> <span class="sql-table">Rider</span> (
     <span class="sql-comment">-- Primary Key: Unique identifier for each rider</span>
     RiderID <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">10</span>) <span class="sql-keyword">PRIMARY KEY</span>,
     
-    <span class="sql-comment">-- Rider's full name</span>
-    RiderName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">100</span>) <span class="sql-keyword">NOT NULL</span>,
+    <span class="sql-comment">-- Rider's first name</span>
+    RiderFirstName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">50</span>) <span class="sql-keyword">NOT NULL</span>,
+    
+    <span class="sql-comment">-- Rider's last name</span>
+    RiderLastName <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">50</span>) <span class="sql-keyword">NOT NULL</span>,
     
     <span class="sql-comment">-- Contact phone number</span>
     ContactNumber <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">15</span>) <span class="sql-keyword">NOT NULL</span>,
@@ -482,8 +490,8 @@
     <span class="sql-comment">-- Type of vehicle used for delivery</span>
     VehicleType <span class="sql-keyword">VARCHAR</span>(<span class="sql-number">20</span>) <span class="sql-keyword">NOT NULL</span>
 );</code></pre>
+                    </div>
                 </div>
-            </div>
 
             <!-- Orders Table -->
             <div class="table-implementation" data-animate="card-entrance" data-delay="0.6">
@@ -649,9 +657,9 @@
                     <pre><code><span class="sql-comment">-- Insert sample data following proper referential integrity</span>
 
 <span class="sql-comment">-- Insert Customers</span>
-<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Customer</span> (<span class="sql-function">CustomerID</span>, <span class="sql-function">CustomerName</span>) <span class="sql-keyword">VALUES</span>
-(<span class="sql-string">'C001'</span>, <span class="sql-string">'John Smith'</span>),
-(<span class="sql-string">'C002'</span>, <span class="sql-string">'Mary Johnson'</span>);
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Customer</span> (<span class="sql-function">CustomerID</span>, <span class="sql-function">CustomerFirstName</span>, <span class="sql-function">CustomerLastName</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'C001'</span>, <span class="sql-string">'John'</span>, <span class="sql-string">'Smith'</span>),
+(<span class="sql-string">'C002'</span>, <span class="sql-string">'Mary'</span>, <span class="sql-string">'Johnson'</span>);
 
 <span class="sql-comment">-- Insert Customer Phone Numbers</span>
 <span class="sql-keyword">INSERT INTO</span> <span class="sql-table">CustomerPhone</span> (<span class="sql-function">CustomerID</span>, <span class="sql-function">PhoneNumber</span>) <span class="sql-keyword">VALUES</span>
@@ -666,10 +674,10 @@
 (<span class="sql-string">'R003'</span>, <span class="sql-string">'Sushi Express'</span>, <span class="sql-string">'City Center'</span>, <span class="sql-string">'555-3333'</span>);
 
 <span class="sql-comment">-- Insert Riders</span>
-<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Rider</span> (<span class="sql-function">RiderID</span>, <span class="sql-function">RiderName</span>, <span class="sql-function">ContactNumber</span>, <span class="sql-function">VehicleType</span>) <span class="sql-keyword">VALUES</span>
-(<span class="sql-string">'RD001'</span>, <span class="sql-string">'Alex Rider'</span>, <span class="sql-string">'555-4444'</span>, <span class="sql-string">'Motorcycle'</span>),
-(<span class="sql-string">'RD002'</span>, <span class="sql-string">'Sarah Wilson'</span>, <span class="sql-string">'555-5555'</span>, <span class="sql-string">'Bicycle'</span>),
-(<span class="sql-string">'RD003'</span>, <span class="sql-string">'Mike Chen'</span>, <span class="sql-string">'555-6666'</span>, <span class="sql-string">'Car'</span>);
+<span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Rider</span> (<span class="sql-function">RiderID</span>, <span class="sql-function">RiderFirstName</span>, <span class="sql-function">RiderLastName</span>, <span class="sql-function">ContactNumber</span>, <span class="sql-function">VehicleType</span>) <span class="sql-keyword">VALUES</span>
+(<span class="sql-string">'RD001'</span>, <span class="sql-string">'Alex'</span>, <span class="sql-string">'Rider'</span>, <span class="sql-string">'555-4444'</span>, <span class="sql-string">'Motorcycle'</span>),
+(<span class="sql-string">'RD002'</span>, <span class="sql-string">'Sarah'</span>, <span class="sql-string">'Wilson'</span>, <span class="sql-string">'555-5555'</span>, <span class="sql-string">'Bicycle'</span>),
+(<span class="sql-string">'RD003'</span>, <span class="sql-string">'Mike'</span>, <span class="sql-string">'Chen'</span>, <span class="sql-string">'555-6666'</span>, <span class="sql-string">'Car'</span>);
 
 <span class="sql-comment">-- Insert Orders (referencing existing customers, restaurants, and riders)</span>
 <span class="sql-keyword">INSERT INTO</span> <span class="sql-table">Orders</span> (<span class="sql-function">OrderID</span>, <span class="sql-function">CustomerID</span>, <span class="sql-function">RestaurantID</span>, <span class="sql-function">RiderID</span>, <span class="sql-function">OrderDate</span>, <span class="sql-function">TotalAmount</span>) <span class="sql-keyword">VALUES</span>

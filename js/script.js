@@ -640,10 +640,588 @@ const injectAnimationStyles = () => {
     document.head.appendChild(style);
 };
 
+// ===========================================
+// ADVANCED 2026-LEVEL INTERACTIVE FEATURES
+// ===========================================
+
+class ParticleSystem2026 {
+    constructor() {
+        this.particles = [];
+        this.particleCount = 50;
+        this.container = document.getElementById('particles');
+        this.init();
+    }
+
+    init() {
+        this.createParticles();
+        this.animateParticles();
+        this.addMouseInteraction();
+    }
+
+    createParticles() {
+        for (let i = 0; i < this.particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+
+            // Random positioning and properties
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+
+            // Color variation
+            const colors = ['var(--primary-color)', 'var(--secondary-color)', 'var(--accent-color)'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            this.container.appendChild(particle);
+            this.particles.push(particle);
+        }
+    }
+
+    animateParticles() {
+        // Dynamic particle behavior
+        setInterval(() => {
+            this.particles.forEach(particle => {
+                // Add subtle movement variations
+                const currentTop = parseFloat(particle.style.top);
+                particle.style.top = (currentTop + Math.sin(Date.now() * 0.001) * 0.1) + '%';
+            });
+        }, 100);
+    }
+
+    addMouseInteraction() {
+        document.addEventListener('mousemove', (e) => {
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            this.particles.forEach((particle, index) => {
+                const speed = (index % 3 + 1) * 0.5;
+                const x = (mouseX - 0.5) * speed;
+                const y = (mouseY - 0.5) * speed;
+
+                particle.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+            });
+        });
+    }
+}
+
+class HolographicEffects {
+    constructor() {
+        this.init();
+    }
+
+    init() {
+        this.addHolographicCards();
+        this.addDynamicLighting();
+        this.addMagneticCursor();
+    }
+
+    addHolographicCards() {
+        const cards = document.querySelectorAll('.team-card, .overview-card, .entity-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', (e) => {
+                this.createHologramEffect(card, e);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                this.removeHologramEffect(card);
+            });
+        });
+    }
+
+    createHologramEffect(card, event) {
+        const rect = card.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+
+        // Create holographic overlay
+        const hologram = document.createElement('div');
+        hologram.className = 'hologram-overlay';
+        hologram.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg,
+                rgba(255, 107, 53, 0.3) 0%,
+                rgba(232, 93, 117, 0.2) 25%,
+                rgba(76, 175, 80, 0.3) 50%,
+                rgba(255, 107, 53, 0.2) 75%,
+                rgba(232, 93, 117, 0.3) 100%);
+            opacity: 0;
+            animation: hologramPulse 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+        `;
+
+        card.style.position = 'relative';
+        card.appendChild(hologram);
+
+        // Animate hologram appearance
+        setTimeout(() => {
+            hologram.style.opacity = '0.6';
+        }, 50);
+    }
+
+    removeHologramEffect(card) {
+        const hologram = card.querySelector('.hologram-overlay');
+        if (hologram) {
+            hologram.style.opacity = '0';
+            setTimeout(() => hologram.remove(), 300);
+        }
+    }
+
+    addDynamicLighting() {
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.team-card, .overview-card');
+
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const angleX = (y - centerY) / centerY;
+                const angleY = (centerX - x) / centerX;
+
+                card.style.transform = `perspective(1000px) rotateX(${angleX * 5}deg) rotateY(${angleY * 5}deg)`;
+            });
+        });
+    }
+
+    addMagneticCursor() {
+        const magneticElements = document.querySelectorAll('.btn, .nav-link, .social-links a');
+
+        document.addEventListener('mousemove', (e) => {
+            magneticElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                const distance = Math.sqrt(x * x + y * y);
+
+                if (distance < 100) {
+                    const strength = (100 - distance) / 100;
+                    element.style.transform = `translate(${x * strength * 0.3}px, ${y * strength * 0.3}px)`;
+                } else {
+                    element.style.transform = 'translate(0, 0)';
+                }
+            });
+        });
+    }
+}
+
+class NeuralNetworkVisualization {
+    constructor() {
+        this.canvas = null;
+        this.ctx = null;
+        this.nodes = [];
+        this.connections = [];
+        this.init();
+    }
+
+    init() {
+        this.createCanvas();
+        this.generateNeuralNetwork();
+        this.animate();
+    }
+
+    createCanvas() {
+        this.canvas = document.createElement('canvas');
+        this.canvas.id = 'neural-network';
+        this.canvas.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.1;
+        `;
+
+        document.body.appendChild(this.canvas);
+        this.ctx = this.canvas.getContext('2d');
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
+    }
+
+    resizeCanvas() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+    }
+
+    generateNeuralNetwork() {
+        // Create nodes (representing database entities)
+        for (let i = 0; i < 15; i++) {
+            this.nodes.push({
+                x: Math.random() * this.canvas.width,
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                connections: []
+            });
+        }
+
+        // Create connections between nodes
+        this.nodes.forEach((node, i) => {
+            const connectionCount = Math.floor(Math.random() * 4) + 1;
+            for (let j = 0; j < connectionCount; j++) {
+                const targetIndex = Math.floor(Math.random() * this.nodes.length);
+                if (targetIndex !== i) {
+                    node.connections.push(targetIndex);
+                }
+            }
+        });
+    }
+
+    animate() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Update node positions
+        this.nodes.forEach(node => {
+            node.x += node.vx;
+            node.y += node.vy;
+
+            // Bounce off edges
+            if (node.x < 0 || node.x > this.canvas.width) node.vx *= -1;
+            if (node.y < 0 || node.y > this.canvas.height) node.vy *= -1;
+
+            // Keep within bounds
+            node.x = Math.max(0, Math.min(this.canvas.width, node.x));
+            node.y = Math.max(0, Math.min(this.canvas.height, node.y));
+        });
+
+        // Draw connections
+        this.ctx.strokeStyle = 'rgba(255, 107, 53, 0.3)';
+        this.ctx.lineWidth = 1;
+
+        this.nodes.forEach((node, i) => {
+            node.connections.forEach(targetIndex => {
+                const target = this.nodes[targetIndex];
+                this.ctx.beginPath();
+                this.ctx.moveTo(node.x, node.y);
+                this.ctx.lineTo(target.x, target.y);
+                this.ctx.stroke();
+            });
+        });
+
+        // Draw nodes
+        this.nodes.forEach(node => {
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+            this.ctx.fillStyle = 'rgba(255, 107, 53, 0.6)';
+            this.ctx.fill();
+        });
+
+        requestAnimationFrame(() => this.animate());
+    }
+}
+
+class QuantumLoadingEffect {
+    constructor() {
+        this.isLoading = true;
+        this.progress = 0;
+        this.init();
+    }
+
+    init() {
+        this.createLoadingOverlay();
+        this.startLoadingAnimation();
+    }
+
+    createLoadingOverlay() {
+        const overlay = document.createElement('div');
+        overlay.className = 'loading-overlay';
+        overlay.innerHTML = `
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <h2>Initializing Neural Database Interface</h2>
+                <p>Connecting to quantum processors...</p>
+                <div class="loading-progress">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="loading-stats">
+                    <span>Entities: 8</span>
+                    <span>Relationships: 6</span>
+                    <span>Normalization: 3NF</span>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+        this.overlay = overlay;
+    }
+
+    startLoadingAnimation() {
+        const progressBar = this.overlay.querySelector('.progress-bar');
+        const stats = this.overlay.querySelectorAll('.loading-stats span');
+
+        const interval = setInterval(() => {
+            this.progress += Math.random() * 15;
+
+            if (this.progress >= 100) {
+                this.progress = 100;
+                clearInterval(interval);
+
+                // Animate stats
+                stats.forEach((stat, index) => {
+                    setTimeout(() => {
+                        stat.style.animation = 'textGlow 0.5s ease-in-out';
+                    }, index * 200);
+                });
+
+                // Hide loading screen
+                setTimeout(() => {
+                    this.overlay.style.animation = 'loadingFade 0.5s ease-in-out forwards';
+                    setTimeout(() => {
+                        this.overlay.remove();
+                        this.triggerWelcomeAnimation();
+                    }, 500);
+                }, 1000);
+            }
+
+            progressBar.style.width = this.progress + '%';
+        }, 100);
+    }
+
+    triggerWelcomeAnimation() {
+        // Trigger welcome sequence
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.style.animation = 'welcomePulse 1s ease-in-out';
+        }
+
+        // Add quantum particles effect
+        this.createQuantumParticles();
+    }
+
+    createQuantumParticles() {
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: fixed;
+                    width: 4px;
+                    height: 4px;
+                    background: var(--primary-color);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    z-index: 1000;
+                    animation: quantumParticle 2s ease-out forwards;
+                `;
+
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 2000);
+            }, i * 100);
+        }
+    }
+}
+
+class VoiceInteractionSystem {
+    constructor() {
+        this.isListening = false;
+        this.recognition = null;
+        this.init();
+    }
+
+    init() {
+        // Check for speech recognition support
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            this.initSpeechRecognition();
+            this.createVoiceButton();
+        }
+    }
+
+    initSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        this.recognition = new SpeechRecognition();
+        this.recognition.continuous = false;
+        this.recognition.interimResults = false;
+        this.recognition.lang = 'en-US';
+
+        this.recognition.onresult = (event) => {
+            const command = event.results[0][0].transcript.toLowerCase();
+            this.processVoiceCommand(command);
+        };
+
+        this.recognition.onend = () => {
+            this.isListening = false;
+            this.updateVoiceButton();
+        };
+    }
+
+    createVoiceButton() {
+        const button = document.createElement('button');
+        button.id = 'voice-button';
+        button.innerHTML = '<i class="fas fa-microphone"></i>';
+        button.style.cssText = `
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: gentlePulse 3s ease-in-out infinite;
+        `;
+
+        button.addEventListener('click', () => this.toggleListening());
+        document.body.appendChild(button);
+        this.voiceButton = button;
+    }
+
+    toggleListening() {
+        if (this.isListening) {
+            this.recognition.stop();
+        } else {
+            this.recognition.start();
+            this.isListening = true;
+            this.updateVoiceButton();
+        }
+    }
+
+    updateVoiceButton() {
+        if (this.isListening) {
+            this.voiceButton.style.background = 'linear-gradient(135deg, #ff4444, #cc0000)';
+            this.voiceButton.style.animation = 'listeningPulse 1s ease-in-out infinite';
+        } else {
+            this.voiceButton.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+            this.voiceButton.style.animation = 'gentlePulse 3s ease-in-out infinite';
+        }
+    }
+
+    processVoiceCommand(command) {
+        console.log('Voice command:', command);
+
+        // Navigate to sections
+        if (command.includes('home') || command.includes('index')) {
+            window.location.href = 'index.html';
+        } else if (command.includes('problem')) {
+            window.location.href = 'problem.html';
+        } else if (command.includes('normalization')) {
+            window.location.href = 'normalization.html';
+        } else if (command.includes('diagram') || command.includes('er')) {
+            window.location.href = 'erdiagram.html';
+        } else if (command.includes('sql')) {
+            window.location.href = 'sql.html';
+        } else if (command.includes('conclusion')) {
+            window.location.href = 'conclusion.html';
+        }
+
+        // Show message
+        this.showVoiceFeedback(`Navigating to ${command}`);
+    }
+
+    showVoiceFeedback(message) {
+        const feedback = document.createElement('div');
+        feedback.textContent = message;
+        feedback.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            z-index: 1001;
+            animation: fadeInOut 2s ease-in-out forwards;
+        `;
+
+        document.body.appendChild(feedback);
+        setTimeout(() => feedback.remove(), 2000);
+    }
+}
+
+// Enhanced CSS Animations
+const injectAdvancedStyles = () => {
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes hologramPulse {
+            0%, 100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes quantumParticle {
+            0% {
+                opacity: 1;
+                transform: scale(0) rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(2) rotate(360deg);
+            }
+        }
+
+        @keyframes welcomePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes listeningPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(255, 68, 68, 0.4);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 8px 35px rgba(255, 68, 68, 0.8);
+            }
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 107, 53, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 107, 53, 0.8), 0 0 30px rgba(255, 107, 53, 0.6); }
+        }
+
+        /* Advanced hover effects */
+        .team-card:hover {
+            filter: drop-shadow(0 20px 40px rgba(255, 107, 53, 0.3));
+        }
+
+        /* Neural network visualization */
+        #neural-network {
+            background: transparent;
+        }
+    `;
+    document.head.appendChild(style);
+};
+
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Inject dynamic styles
+    // Inject advanced styles
     injectAnimationStyles();
+    injectAdvancedStyles();
 
     // Initialize all systems
     new AcademicAnimationSystem();
@@ -651,7 +1229,17 @@ document.addEventListener('DOMContentLoaded', () => {
     new AcademicFeatures();
     new PerformanceOptimizer();
 
+    // Initialize 2026-level features
+    new ParticleSystem2026();
+    new HolographicEffects();
+    new NeuralNetworkVisualization();
+    new QuantumLoadingEffect();
+    new VoiceInteractionSystem();
+
     console.log('🚀 Food Delivery DBMS Project - All systems initialized successfully');
+    console.log('🧠 Advanced 2026 Neural Interface Activated');
+    console.log('🎯 Quantum Processing: Online');
+    console.log('🎤 Voice Commands: Available');
     console.log('📚 Academic Database Management System - 2026');
-    console.log('👨‍🎓 Computer Science Department Project');
+    console.log('👨‍🎓 Computer Science Department Project - Enhanced Edition');
 });
